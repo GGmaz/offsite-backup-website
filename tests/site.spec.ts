@@ -7,7 +7,7 @@ for (const locale of ['', 'en/']) {
     await expect(page.locator('html')).toHaveAttribute('lang', locale ? 'en' : 'sr-Latn');
     await page.reload();
     for (const pkg of ['Basic', 'Standard', 'Premium', 'consultation']) {
-      await page.locator(`a[data-package="${pkg}"]`).click();
+      await page.locator(`a[data-package="${pkg}"]:visible`).click();
       await expect(page.locator('#package')).toHaveValue(pkg);
       await expect(page).toHaveURL(new RegExp(`${locale}#contact$`));
     }
@@ -92,4 +92,46 @@ test('without JavaScript navigation and inert fields still work', async ({ brows
   await page.locator('.inquiry-fields button').click();
   await expect(page).toHaveURL(url);
   await context.close();
+});
+
+test('both designs switch in place, preserve form state, and follow language links', async ({ page }) => {
+  await page.goto(base);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  const switcher = page.locator('#design-switch');
+  const openMenu = async () => {
+    const menu = page.locator('.menu-toggle');
+    if (await menu.isVisible() && await menu.getAttribute('aria-expanded') === 'false') await menu.click();
+  };
+  await page.locator('#full-name').fill('Preserve this name');
+  await page.locator('#package').selectOption('Premium');
+  await openMenu();
+  await expect(page.locator('html')).toHaveAttribute('data-design', 'classic');
+  for (const design of ['blue', 'classic', 'blue']) {
+    await switcher.focus();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('html')).toHaveAttribute('data-design', design);
+    await expect(switcher).toHaveAttribute('aria-pressed', String(design === 'blue'));
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.locator('#full-name')).toHaveValue('Preserve this name');
+    await expect(page.locator('#package')).toHaveValue('Premium');
+    await page.locator('a[data-package="consultation"]:visible').click();
+    await expect(page.locator('#package')).toHaveValue('consultation');
+    await page.locator('#package').selectOption('Premium');
+    for (const width of [320, 768, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      await page.screenshot({ path: `test-results/design-${design}-${test.info().project.name}-${width}.png`, fullPage: true });
+    }
+    const results = await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
+    expect(results.violations).toEqual([]);
+    await openMenu();
+  }
+  await page.locator('.languages a[lang="en"]').click();
+  await expect(page.locator('html')).toHaveAttribute('data-design', 'blue');
+  await expect(page).toHaveURL(new RegExp('en/\\?design=blue$'));
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-design', 'blue');
+  await page.locator('a[data-package="Basic"]:visible').click();
+  await expect(page.locator('#package')).toHaveValue('Basic');
+  expect(await page.evaluate(() => localStorage.length)).toBe(0);
 });

@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import DesignSwitcher from './DesignSwitcher.astro';
 import { site, localePath, type Locale } from '../config/site';
 import type { Content } from '../content/types';
 interface Props { content: Content; locale: Locale }
@@ -8,11 +9,11 @@ const ids = ['about', 'technical', 'pricing', 'faq'];
 ---
 <header class="header">
   <div class="container header-inner">
-    <a class="wordmark" href={localePath(locale)} aria-label={site.name}><span class="brand-icon"><Icon size={25} /></span><span>Offsite<span class="wordmark-light"> Backup</span></span></a>
+    <a class="wordmark" href={localePath(locale)} aria-label={site.name}><span class="classic-brand"><Icon name="shield" size={25} /><span>Offsite<span class="wordmark-light"> Backup</span></span></span><span class="blue-brand"><span class="brand-icon"><Icon name="lock" size={32} /></span><span class="brand-type"><span>OFFSITE BACKUP</span><small>VIDEO BACKUP SOLUTION</small></span></span></a>
     <button class="menu-toggle" hidden aria-expanded="false" aria-controls="main-nav" data-open={c.menu} data-close={c.close}>{c.menu}<span aria-hidden="true">☰</span></button>
     <nav id="main-nav" aria-label={c.navLabel}>
       <div class="nav-links">{ids.map((id, i) => <a href={`#${id}`}>{c.nav[i]}</a>)}</div>
-      <div class="header-actions">
+      <div class="header-actions"><DesignSwitcher content={c} />
         <div class="languages"><a href={localePath('sr')} lang="sr-Latn" aria-label="Srpski" aria-current={locale === 'sr' ? 'page' : undefined}>SR</a><span aria-hidden="true">/</span><a href={localePath('en')} lang="en" aria-label="English" aria-current={locale === 'en' ? 'page' : undefined}>EN</a></div>
         <a class="button button-small" href="#contact">{c.quote}<Icon name="arrow" size={17} /></a>
       </div>
@@ -35,30 +36,32 @@ const ids = ['about', 'technical', 'pricing', 'faq'];
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setOpen(false); toggle.focus(); }
     });
-    matchMedia('(min-width: 64rem)').addEventListener('change', () => setOpen(false));
+    matchMedia('(min-width: 75rem)').addEventListener('change', () => setOpen(false));
   }
 </script>
 <style>
   .header { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
-  .header-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; min-height: 86px; gap: 1rem; padding-block: 1rem; }
-  .wordmark { display: inline-flex; align-items: center; gap: .6rem; color: var(--navy); font-size: 1.2rem; font-weight: 750; text-decoration: none; white-space: nowrap; letter-spacing: -.04em; }
-  .wordmark-light { font-weight: 450; }
-  .brand-icon { color: var(--green-dark); display: flex; }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; min-height: 100px; gap: 1rem; padding-block: 1rem; }
+  .wordmark { display: inline-flex; align-items: center; gap: .8rem; color: var(--navy); font-size: clamp(1rem,2vw,1.7rem); font-weight: 750; text-decoration: none; white-space: nowrap; letter-spacing: -.04em; }
+  .brand-type { display: flex; flex-direction: column; line-height: 1.15; letter-spacing: -.02em; }
+  .brand-type small { font-size: .55em; font-weight: 500; margin-top: .25rem; letter-spacing: .03em; }
+  .brand-icon { color: #114178; display: grid; place-items: center; width: 57px; height: 57px; border: 2px solid #93bad7; border-radius: 50%; background: linear-gradient(130deg,#fff 5%,#cedeea 30%,#fff 48%,#89adca 85%); box-shadow: inset 0 0 0 4px #f8fbff, inset 0 0 0 6px #174b80, 0 3px 8px #072b6219; flex-shrink: 0; }
   nav { width: 100%; }
   .nav-links, .header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem 1rem; }
-  .nav-links a { font-size: .83rem; font-weight: 550; text-decoration: none; padding-block: .8rem; }
-  .nav-links a:hover { color: var(--green-dark); }
+  .nav-links a { font-size: .72rem; font-weight: 650; text-transform: uppercase; letter-spacing: .025em; text-decoration: none; padding-block: .8rem; }
+  .nav-links a:hover { color: var(--blue-dark); }
   .languages { display: flex; align-items: center; gap: .4rem; font-size: .75rem; }
   .languages a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: .25rem; text-decoration: none; color: var(--muted); }
   .languages a[aria-current] { font-weight: 750; color: var(--navy); text-decoration: underline; text-underline-offset: .3rem; }
   .menu-toggle { align-items: center; gap: .65rem; background: var(--white); border: 1px solid var(--border); border-radius: .4rem; padding: .7rem; color: var(--navy); font: inherit; font-size: .85rem; min-height: 44px; }
   .menu-toggle:not([hidden]) { display: inline-flex; }
   nav.enhanced { display: none; }
+  @media (max-width: 24rem) { .brand-icon { width: 44px; height: 44px; } .header-inner { gap: .5rem; } .wordmark { gap: .45rem; } }
   nav.enhanced.is-open { display: block; }
-  @media (min-width: 64rem) {
+  @media (min-width: 75rem) {
     .header-inner { flex-wrap: nowrap; gap: 1.5rem; }
-    nav, nav.enhanced, nav.enhanced.is-open { display: flex; justify-content: flex-end; align-items: center; gap: 1.5rem; width: auto; }
-    .nav-links { gap: 1.1rem; }
+    nav, nav.enhanced, nav.enhanced.is-open { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; width: auto; }
+    .nav-links { gap: .8rem; }
     .menu-toggle:not([hidden]) { display: none; }
     .header-actions { flex-wrap: nowrap; }
   }

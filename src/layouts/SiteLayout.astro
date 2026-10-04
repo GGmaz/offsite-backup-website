@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/designs.css';
 import { site, path, localePath, absolute, type Locale } from '../config/site';
 import type { Content } from '../content/types';
 interface Props { content: Content; locale: Locale }
@@ -26,7 +27,7 @@ const canonical = absolute(localePath(locale));
 // Organization / Service JSON-LD awaits confirmed legal business details.
 ---
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} data-design="classic">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

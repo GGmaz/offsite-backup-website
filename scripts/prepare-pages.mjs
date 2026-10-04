@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const build = join(root, 'dist');
 const manifest = join(root, '.pages-files.json');
-const allowed = file => /^(?:index\.html|robots\.txt|sitemap\.xml|favicon\.svg|social-preview-(?:sr|en)\.png|en\/index\.html|(?:_astro|fonts)\/[\w.-]+)$/.test(file);
+const allowed = file => /^(?:index\.html|robots\.txt|sitemap\.xml|favicon\.svg|social-preview-(?:sr|en)\.png|en\/index\.html|(?:_astro|fonts|images)\/[\w.-]+)$/.test(file);
 
 async function filesIn(directory, prefix = '') {
   const files = [];

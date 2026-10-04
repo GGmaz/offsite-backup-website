@@ -31,11 +31,11 @@ const details = [site.business.address, site.business.phone, site.business.email
   inquiry?.addEventListener('keydown', event => {
     if (event instanceof KeyboardEvent && event.key === 'Enter' && event.target instanceof HTMLInputElement) event.preventDefault();
   });
-  document.querySelectorAll<HTMLAnchorElement>('a[data-package]').forEach(link => {
-    link.addEventListener('click', () => {
-      const select = document.querySelector<HTMLSelectElement>('#package');
-      if (select) select.value = link.dataset.package!;
-    });
+  // Delegation also handles CTAs in the hero after switching designs.
+  document.addEventListener('click', event => {
+    const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[data-package]') : null;
+    const select = document.querySelector<HTMLSelectElement>('#package');
+    if (link && select) select.value = link.dataset.package!;
   });
 </script>
 <style>
@@ -45,7 +45,7 @@ const details = [site.business.address, site.business.phone, site.business.email
   dd { margin: .3rem 0 0; font-size: .85rem; }
   .pending { color: var(--muted); }
   .form-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(1.2rem,3vw,2rem); }
-  .form-notice { background: var(--green-light); color: #14543f; padding: 1rem; margin-top: 0; border-radius: 6px; display: flex; align-items: flex-start; gap: .6rem; font-size: .78rem; }
+  .form-notice { background: var(--blue-light); color: #174776; padding: 1rem; margin-top: 0; border-radius: 6px; display: flex; align-items: flex-start; gap: .6rem; font-size: .78rem; }
   .form-notice svg { flex-shrink: 0; margin-top: .15rem; }
   .required-note { font-size: .72rem; color: var(--muted); }
   .inquiry-fields { display: grid; gap: 1rem; border: 0; margin: 1.2rem 0 0; padding: 0; min-width: 0; }

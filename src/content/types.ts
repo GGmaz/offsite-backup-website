@@ -1,7 +1,8 @@
 export interface Content {
   title: string; description: string; skip: string; navLabel: string; menu: string; close: string;
   nav: [string, string, string, string]; quote: string;
-  hero: { eyebrow: string; title: string; text: string; pricing: string; consult: string; highlights: string[]; diagramLabel: string; remote: string; client: string; encrypted: string; schedule: string };
+  design: { toggle: string; showBlue: string; showClassic: string };
+  hero: { classicText: string; classicEyebrow: string; displayTitle: string; how: string; features: {title: string; text: string}[]; cards: string[]; eyebrow: string; title: string; text: string; pricing: string; consult: string; highlights: string[]; diagramLabel: string; remote: string; client: string; encrypted: string; schedule: string };
   about: { eyebrow: string; title: string; text: string; steps: {title: string; text: string}[] };
   benefits: { eyebrow: string; title: string; text: string; cards: {title: string; text: string}[] };
   technical: { eyebrow: string; title: string; text: string; diagram: string[]; description: string; items: {title: string; text: string}[] };

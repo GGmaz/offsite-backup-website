@@ -1,0 +1,28 @@
+/* Both layouts share business content and form state. Classic is the published default. */
+:root[data-design='classic'] {
+  --navy: #0a192f; --surface: #f8fafc; --blue: #10b981; --blue-dark: #047857; --blue-light: #ecfdf5; --muted: #536579; --border: #e1e7ee;
+  --radius: 12px; --width: 1200px; --gutter: clamp(1.2rem,4vw,3rem); --section-space: clamp(3.5rem,7vw,6rem);
+}
+.classic-brand, .blue-brand { display: inline-flex; align-items: center; gap: .6rem; }
+.classic-brand svg { color: var(--blue-dark); }
+.wordmark-light { font-weight: 450; }
+html[data-design='classic'] .blue-brand,
+html[data-design='blue'] .classic-brand,
+html[data-design='classic'] .blue-only { display: none; }
+html[data-design='classic'] .header-inner { min-height: 86px; }
+html[data-design='classic'] .wordmark { font-size: 1.2rem; }
+html[data-design='classic'] .nav-links a { font-size: .8rem; font-weight: 550; text-transform: none; letter-spacing: normal; }
+html[data-design='classic'] .button { border-radius: 6px; background: var(--blue-dark); padding: .85rem 1.1rem; }
+html[data-design='classic'] .button-small { padding: .65rem .85rem; }
+html[data-design='classic'] .button:hover { background: #065f46; border-color: #065f46; }
+html[data-design='classic'] .button-outline,
+html[data-design='classic'] .button-outline-light { background: transparent; }
+html[data-design='classic'] .button-outline:hover { background: var(--blue-light); border-color: var(--blue-dark); }
+html[data-design='classic'] .button-outline-light:hover { background: #ffffff0d; border-color: #b8c7dc; }
+html[data-design='classic'] .status-dot { background: #51d9aa; }
+html[data-design='classic'] .benefit-grid article { box-shadow: none; }
+html[data-design='classic'] .card-icon { border-radius: 10px; }
+html[data-design='classic'] .recommended .recommendation { background: var(--blue-dark); }
+html[data-design='classic'] .form-notice { color: #14543f; }
+html[data-design='classic'] footer { background: var(--navy); }
+html[data-design='classic'] .footer-brand svg { color: #51d9aa; }

@@ -24,3 +24,9 @@ These are local measurements; deployed network/cache behavior may differ. Raw re
 The Jekyll error was caused by publishing uncompiled Astro source from the main branch root. `npm run build` now exports the generated site to the root and adds `.nojekyll` for branch publishing. All 11 exported files were compared byte-for-byte with `dist/`.
 
 The 10 Playwright smoke/accessibility tests passed against a plain static HTTP server serving only those exported files (`PLAYWRIGHT_BASE_URL=http://127.0.0.1:4323`). The export test passed for both-language output, stale asset cleanup, source preservation and rejection of unsafe manifest entries. Astro checks passed with zero errors/warnings/hints. The earlier Lighthouse measurements were not rerun for this publishing-only change.
+
+## Reference redesign — 2026-10-04
+
+The white/navy/blue reference redesign passed Astro checks (zero errors/warnings/hints), the production build and all 10 browser/accessibility smoke tests against the local development server at port 4322. Desktop and 320px phone screenshots were visually reviewed. The static export test passed, and all 13 generated root files match the final `dist/` output. Lighthouse was not rerun for this visual redesign. No staging, commit or push was performed.
+
+Generated image assets and their prompts are documented in `DESIGN-NOTES.md`.

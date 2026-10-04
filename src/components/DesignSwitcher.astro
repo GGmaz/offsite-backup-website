@@ -1,0 +1,43 @@
+---
+import type { Content } from '../content/types';
+interface Props { content: Content }
+const { design: d } = Astro.props.content;
+---
+<button id="design-switch" class="design-switch" type="button" hidden aria-label={d.toggle} aria-pressed="false" data-blue-label={d.showBlue} data-classic-label={d.showClassic}>{d.showBlue}</button>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('#design-switch');
+  const host = document.querySelector<HTMLElement>('#hero-host');
+  if (button && host) {
+    const apply = (design: 'classic' | 'blue') => {
+      const template = document.querySelector<HTMLTemplateElement>(`#hero-${design}`);
+      if (!template) return;
+      document.documentElement.dataset.design = design;
+      host.replaceChildren(template.content.cloneNode(true));
+      button.setAttribute('aria-pressed', String(design === 'blue'));
+      button.textContent = design === 'blue' ? button.dataset.classicLabel! : button.dataset.blueLabel!;
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', design === 'blue' ? '#072B62' : '#0A192F');
+      // Carry the visual choice through language changes without storing form data.
+      document.querySelectorAll<HTMLAnchorElement>('a[lang]').forEach(link => {
+        const url = new URL(link.href);
+        if (design === 'blue') url.searchParams.set('design', 'blue');
+        else url.searchParams.delete('design');
+        link.href = url.href;
+      });
+    };
+    const initial = new URL(location.href).searchParams.get('design') === 'blue' ? 'blue' : 'classic';
+    apply(initial);
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      const design = document.documentElement.dataset.design === 'blue' ? 'classic' : 'blue';
+      apply(design);
+      const url = new URL(location.href);
+      if (design === 'blue') url.searchParams.set('design', 'blue');
+      else url.searchParams.delete('design');
+      history.replaceState(null, '', url);
+    });
+  }
+</script>
+<style>
+  .design-switch { min-height: 44px; padding: .55rem .8rem; border: 1px solid var(--blue-dark); border-radius: 6px; color: var(--blue-dark); background: var(--white); font: inherit; font-size: .7rem; font-weight: 600; white-space: nowrap; }
+  .design-switch:hover { background: var(--blue-light); }
+</style>

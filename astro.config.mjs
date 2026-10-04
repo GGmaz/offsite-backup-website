@@ -6,4 +6,5 @@ export default defineConfig({
   base: site.base,
   trailingSlash: 'always',
   output: 'static',
+  devToolbar: { enabled: false },
 });

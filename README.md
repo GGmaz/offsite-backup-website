@@ -33,7 +33,7 @@ Lighthouse writes local HTML/JSON reports to `reports/`; Playwright screenshots 
 
 ## Codex push shortcut
 
-Invoke `$push` in Codex to stage all repository changes, create a short descriptive commit, and push the current branch. The repo-scoped skill lives in `.agents/skills/push/SKILL.md` and travels with the repository.
+Send `$push` to Codex to authorize `git add .`, `git commit -m "<generated short message>"`, then `git push`. The repository instructions in `AGENTS.md` map this text command to `.agents/skills/push/SKILL.md`. The skill is explicit-only. Coding requests and earlier push requests do not authorize staging, committing or pushing later changes.
 
 ## Content and configuration
 
@@ -66,7 +66,7 @@ The repository owner manages GitHub Pages publishing from `main` in GitHub setti
 
 `npm run build` compiles Astro into `dist/`, then copies the generated pages and assets to the repository root for **main / (root)** branch publishing. The root `.nojekyll` file disables Jekyll processing so Astro source frontmatter is not treated as YAML. Generated root files are committed alongside source; `dist/` remains ignored.
 
-After editing content, run `npm run check` and `npm run build`, then commit and push all changes. Edit `src/` and `public/`, not generated root HTML/assets. `scripts/prepare-pages.mjs` records generated files in `.pages-files.json` and removes only obsolete files listed there. The `$push` shortcut rebuilds before staging so published files stay current.
+After editing content, run `npm run check` and `npm run build` to refresh the published files. Commit and push only with explicit permission, such as `$push`. Edit `src/` and `public/`, not generated root HTML/assets. `scripts/prepare-pages.mjs` records generated files in `.pages-files.json` and removes only obsolete files listed there. The `$push` shortcut runs only the three Git commands; rebuilding is a separate step.
 
 The Astro origin and base path are retained for correct asset links, locale routes and canonical URLs. A custom domain would require updating `site.origin` and `site.base`. After pushing, check both locale routes, direct refresh, fonts and package CTAs. Roll back with a revert and rebuild before pushing.
 

@@ -1,13 +1,16 @@
 ---
 name: push
-description: Stage all repository changes, make a short descriptive commit, and push the current branch when the user requests committing and pushing or invokes $push.
+description: Run git add ., commit with a short generated message, and git push only when the user sends $push as a command.
 ---
 
-When invoked, complete the user's add → commit → push workflow in the current repository. Invocation authorizes this sequence; do not ask for redundant confirmation. Follow execution permission requirements if sandbox or network access blocks a command.
+A standalone `$push` request explicitly authorizes the following sequence for the current repository changes. Mentions of `$push` while configuring or explaining the shortcut are not invocations. Never carry permission forward from a previous push request to later edits.
 
-1. Inspect the current branch, status and remote. Stop for a detached HEAD or unresolved conflicts. Use the current branch; do not switch branches.
-2. Run `npm run check` and `npm run build` with the Node version in `.nvmrc` before staging. This repository publishes generated root files from `main`; stop if checks or build fail. Then run `git add --all` at the repository root, including existing user changes and refreshed static output. Keep ignored files ignored.
-3. Inspect the staged diff and `git diff --cached --check`. Reuse relevant checks already performed for unchanged code; run checks when new code or unresolved failures warrant them.
-4. Commit with the user's message when supplied. Otherwise choose a descriptive, single-line message of no more than about 50 characters. Do not create an empty commit. If nothing is staged, proceed to push any existing unpushed commits.
-5. Run `git push` to the current branch's configured upstream. If no upstream exists, use `git push --set-upstream origin <current-branch>` after confirming origin is the intended repository. Stop on rejection or authentication failure and report the blocker; never force-push, rewrite history, or resolve remote divergence automatically.
-6. Report the commit, branch and push result. A push may trigger the repository owner’s configured automation or branch publishing; do not change GitHub publishing settings as part of this skill.
+From the repository root, run in order:
+
+1. `git add .`
+2. `git commit -m "<generate message>"` — generate a short, descriptive, single-line message, preferably no more than 50 characters, based on the staged changes.
+3. `git push`
+
+Read-only status and staged-diff inspection may be used to choose the message and verify the result. Do not add automatic builds, deployments, branch switching, upstream changes, force-pushes or history rewrites. If nothing is staged, skip creating an empty commit and push any existing unpushed commits. Stop if staging, committing or pushing fails and report the error. Follow sandbox permission requirements without treating saved command approvals as user authorization for a new task.
+
+Report the commit and push result. Do not stage, commit or push as a side effect of other work without fresh explicit permission for those operations.

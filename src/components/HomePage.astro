@@ -2,6 +2,8 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import Header from './Header.astro';
 import Hero from './Hero.astro';
+import ClassicHero from './ClassicHero.astro';
+import ServiceCards from './ServiceCards.astro';
 import ServiceOverview from './ServiceOverview.astro';
 import Benefits from './Benefits.astro';
 import TechnicalSpecs from './TechnicalSpecs.astro';
@@ -14,4 +16,4 @@ import type { Locale } from '../config/site';
 interface Props { content: Content; locale: Locale }
 const { content, locale } = Astro.props;
 ---
-<SiteLayout content={content} locale={locale}><Header content={content} locale={locale} /><main id="main"><Hero content={content} /><ServiceOverview content={content} /><Benefits content={content} /><TechnicalSpecs content={content} /><Pricing content={content} /><FAQ content={content} /><Contact content={content} /></main><Footer content={content} locale={locale} /></SiteLayout>
+<SiteLayout content={content} locale={locale}><Header content={content} locale={locale} /><main id="main"><div id="hero-host"><ClassicHero content={content} /></div><template id="hero-classic"><ClassicHero content={content} /></template><template id="hero-blue"><Hero content={content} /></template><div class="blue-only"><ServiceCards content={content} /></div><ServiceOverview content={content} /><Benefits content={content} /><TechnicalSpecs content={content} /><Pricing content={content} /><FAQ content={content} /><Contact content={content} /></main><Footer content={content} locale={locale} /></SiteLayout>

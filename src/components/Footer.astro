@@ -7,10 +7,10 @@ const { content: c, locale } = Astro.props;
 ---
 <footer><div class="container"><div class="footer-main"><div><a class="footer-brand" href={localePath(locale)}><Icon size={24} />{site.name}</a><p>{c.footer.description}</p><p class="legal-name">{site.business.legalName || c.footer.pending}</p></div><div class="footer-links"><a href={localePath('sr')} lang="sr-Latn">Srpski</a><a href={localePath('en')} lang="en">English</a>{site.business.phone && <a href={`tel:${site.business.phone}`}>{site.business.phone}</a>}{site.business.email && <a href={`mailto:${site.business.email}`}>{site.business.email}</a>}<a href="#top">{c.footer.top} ↑</a></div></div><div class="footer-bottom">© {new Date().getFullYear()} {site.business.legalName || site.name}. {c.footer.copyright}</div></div></footer>
 <style>
-  footer { background: var(--navy); color: #b8c7dc; padding-block: 3rem 1.5rem; }
+  footer { background: linear-gradient(120deg,#061d41,#073c77); color: #b8c7dc; padding-block: 3rem 1.5rem; }
   .footer-main { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; padding-bottom: 2rem; }
   .footer-brand { display: inline-flex; align-items: center; gap: .6rem; color: white; text-decoration: none; font-size: 1.1rem; font-weight: 650; letter-spacing: -.03em; }
-  .footer-brand svg { color: #51d9aa; }
+  .footer-brand svg { color: #94ccff; }
   p { font-size: .8rem; margin-bottom: .4rem; }
   .legal-name { font-size: .7rem; }
   .footer-links { display: flex; gap: 1.3rem; flex-wrap: wrap; align-items: flex-start; }

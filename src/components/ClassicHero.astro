@@ -1,0 +1,56 @@
+---
+import Icon from './Icon.astro';
+import type { Content } from '../content/types';
+interface Props { content: Content }
+const h = { ...Astro.props.content.hero, text: Astro.props.content.hero.classicText, eyebrow: Astro.props.content.hero.classicEyebrow };
+---
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>{h.eyebrow}</p>
+      <h1 id="hero-heading">{h.title}</h1>
+      <p class="hero-description">{h.text}</p>
+      <div class="hero-buttons"><a class="button" href="#pricing">{h.pricing}<Icon name="arrow" size={18} /></a><a class="button button-outline-light" href="#contact" data-package="consultation">{h.consult}</a></div>
+      <ul class="hero-highlights">{h.highlights.map(text => <li><Icon name="check" size={17} /><span>{text}</span></li>)}</ul>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="visual-grid"></div>
+      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+      <div class="vault"><div class="vault-top"><span class="status-dot"></span><span>OFFSITE / BACKUP</span><Icon name="lock" size={16} /></div><div class="vault-symbol"><Icon name="shield" size={65} /></div><p>{h.remote}</p><div class="server-slot"><span></span><i></i><i></i></div><div class="server-slot"><span></span><i></i><i></i></div><div class="server-slot"><span></span><i></i><i></i></div></div>
+      <div class="transfer-line"><span></span><span></span><span></span></div>
+      <div class="local-node"><Icon name="video" size={28} /><div><strong>{h.client}</strong><small>{h.encrypted}</small></div><Icon name="lock" size={17} /></div>
+      <p class="visual-caption">{h.schedule}</p>
+    </div>
+  </div>
+</section>
+<style>
+  .hero { background: var(--navy); color: white; overflow: hidden; }
+  .hero-grid { display: grid; gap: 3rem; padding-block: clamp(3.5rem, 7vw, 6rem); }
+  .eyebrow { color: #72e5ba; display: flex; align-items: center; gap: .6rem; font-size: .68rem; }
+  h1 { max-width: 760px; font-size: clamp(2.25rem, 4.2vw, 3.8rem); letter-spacing: -.055em; line-height: 1.1; font-weight: 650; margin-block: 1.35rem 1.5rem; text-wrap: balance; }
+  .hero-description { color: #b8c7dc; max-width: 590px; font-size: 1.03rem; line-height: 1.8; }
+  .hero-buttons { display: flex; flex-wrap: wrap; gap: .8rem; margin-block: 2rem; }
+  .hero-highlights { padding: 0; margin: 2rem 0 0; list-style: none; display: grid; gap: .75rem; font-size: .79rem; color: #c6d4e6; max-width: 540px; }
+  .hero-highlights li { display: flex; gap: .6rem; align-items: flex-start; }
+  .hero-highlights svg { flex-shrink: 0; color: #51d9aa; margin-top: .15rem; }
+  .hero-visual { position: relative; min-height: 390px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .visual-grid { position: absolute; inset: 0; background-image: linear-gradient(#c5dbff08 1px, transparent 1px), linear-gradient(90deg,#c5dbff08 1px,transparent 1px); background-size: 34px 34px; mask-image: radial-gradient(ellipse,black,transparent 72%); }
+  .orbit { position: absolute; border: 1px solid #5882a626; width: 320px; height: 320px; border-radius: 50%; top: 3%; }
+  .orbit-two { width: 400px; height: 400px; top: -7%; }
+  .vault { background: linear-gradient(135deg,#19334d,#0e223b); border: 1px solid #31536a; border-radius: 16px; width: 255px; padding: 1.15rem 1.5rem 1.5rem; z-index: 1; box-shadow: 0 25px 65px #0003; }
+  .vault-top { display: flex; align-items: center; gap: .5rem; font: 9px ui-monospace,monospace; letter-spacing: .08em; color: #b8c7dc; }
+  .vault-top svg { margin-left: auto; color: #51d9aa; }
+  .vault-symbol { color: #51d9aa; display: flex; justify-content: center; padding-top: 1.7rem; }
+  .vault p { text-align: center; font-size: .87rem; margin-block: .6rem 1.35rem; }
+  .server-slot { background: #09182c; border: 1px solid #29435a; border-radius: 4px; height: 24px; margin-top: 6px; display: flex; align-items: center; gap: 5px; padding-inline: 10px; }
+  .server-slot span { width: 75px; height: 3px; background: #385069; margin-right: auto; }
+  .server-slot i { width: 4px; height: 4px; background: #51d9aa; border-radius: 50%; }
+  .transfer-line { height: 54px; border-left: 1px dashed #51d9aa80; display: flex; flex-direction: column; justify-content: space-evenly; }
+  .transfer-line span { width: 4px; height: 4px; background: #51d9aa; border-radius: 50%; margin-left: -2.5px; }
+  .local-node { position: relative; display: flex; align-items: center; gap: .8rem; background: #112840; border: 1px solid #31536a; border-radius: 9px; padding: 1rem; max-width: 100%; color: #80b1ce; }
+  .local-node strong, .local-node small { display: block; }
+  .local-node strong { color: #e4ebf6; font-size: .8rem; }
+  .local-node small { color: #a7bad0; font-size: .65rem; margin-top: .25rem; }
+  .visual-caption { color: #a7bad0; font: .64rem ui-monospace,monospace; margin-top: 1.3rem; }
+  @media (min-width: 64rem) { .hero-grid { grid-template-columns: 1.4fr 1fr; align-items: center; gap: 2.5rem; } }
+</style>

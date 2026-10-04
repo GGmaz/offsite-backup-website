@@ -1,0 +1,65 @@
+---
+import Icon from './Icon.astro';
+import { site, localePath, type Locale } from '../config/site';
+import type { Content } from '../content/types';
+interface Props { content: Content; locale: Locale }
+const { content: c, locale } = Astro.props;
+const ids = ['about', 'technical', 'pricing', 'faq'];
+---
+<header class="header">
+  <div class="container header-inner">
+    <a class="wordmark" href={localePath(locale)} aria-label={site.name}><span class="brand-icon"><Icon size={25} /></span><span>Offsite<span class="wordmark-light"> Backup</span></span></a>
+    <button class="menu-toggle" hidden aria-expanded="false" aria-controls="main-nav" data-open={c.menu} data-close={c.close}>{c.menu}<span aria-hidden="true">☰</span></button>
+    <nav id="main-nav" aria-label={c.navLabel}>
+      <div class="nav-links">{ids.map((id, i) => <a href={`#${id}`}>{c.nav[i]}</a>)}</div>
+      <div class="header-actions">
+        <div class="languages"><a href={localePath('sr')} lang="sr-Latn" aria-label="Srpski" aria-current={locale === 'sr' ? 'page' : undefined}>SR</a><span aria-hidden="true">/</span><a href={localePath('en')} lang="en" aria-label="English" aria-current={locale === 'en' ? 'page' : undefined}>EN</a></div>
+        <a class="button button-small" href="#contact">{c.quote}<Icon name="arrow" size={17} /></a>
+      </div>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = document.querySelector<HTMLElement>('#main-nav');
+  if (toggle && nav) {
+    toggle.hidden = false;
+    nav.classList.add('enhanced');
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.firstChild!.textContent = open ? toggle.dataset.close! : toggle.dataset.open!;
+      nav.classList.toggle('is-open', open);
+    };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setOpen(false); toggle.focus(); }
+    });
+    matchMedia('(min-width: 64rem)').addEventListener('change', () => setOpen(false));
+  }
+</script>
+<style>
+  .header { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; min-height: 86px; gap: 1rem; padding-block: 1rem; }
+  .wordmark { display: inline-flex; align-items: center; gap: .6rem; color: var(--navy); font-size: 1.2rem; font-weight: 750; text-decoration: none; white-space: nowrap; letter-spacing: -.04em; }
+  .wordmark-light { font-weight: 450; }
+  .brand-icon { color: var(--green-dark); display: flex; }
+  nav { width: 100%; }
+  .nav-links, .header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem 1rem; }
+  .nav-links a { font-size: .83rem; font-weight: 550; text-decoration: none; padding-block: .8rem; }
+  .nav-links a:hover { color: var(--green-dark); }
+  .languages { display: flex; align-items: center; gap: .4rem; font-size: .75rem; }
+  .languages a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: .25rem; text-decoration: none; color: var(--muted); }
+  .languages a[aria-current] { font-weight: 750; color: var(--navy); text-decoration: underline; text-underline-offset: .3rem; }
+  .menu-toggle { align-items: center; gap: .65rem; background: var(--white); border: 1px solid var(--border); border-radius: .4rem; padding: .7rem; color: var(--navy); font: inherit; font-size: .85rem; min-height: 44px; }
+  .menu-toggle:not([hidden]) { display: inline-flex; }
+  nav.enhanced { display: none; }
+  nav.enhanced.is-open { display: block; }
+  @media (min-width: 64rem) {
+    .header-inner { flex-wrap: nowrap; gap: 1.5rem; }
+    nav, nav.enhanced, nav.enhanced.is-open { display: flex; justify-content: flex-end; align-items: center; gap: 1.5rem; width: auto; }
+    .nav-links { gap: 1.1rem; }
+    .menu-toggle:not([hidden]) { display: none; }
+    .header-actions { flex-wrap: nowrap; }
+  }
+</style>

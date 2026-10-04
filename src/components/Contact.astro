@@ -1,0 +1,57 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../config/site';
+import { packages } from '../content/packages';
+import type { Content } from '../content/types';
+interface Props { content: Content }
+const { contact: c } = Astro.props.content;
+const details = [site.business.address, site.business.phone, site.business.email, site.business.hours];
+---
+<section id="contact" class="section surface" aria-labelledby="contact-heading"><div class="container contact-grid">
+  <div><p class="eyebrow">{c.eyebrow}</p><h2 id="contact-heading">{c.title}</h2><p class="section-text">{c.text}</p>
+    <dl class="business-details">{c.details.map((label, i) => <div><dt>{label}</dt><dd>{details[i] ? i === 1 ? <a href={`tel:${details[i].replace(/\s/g, '')}`}>{details[i]}</a> : i === 2 ? <a href={`mailto:${details[i]}`}>{details[i]}</a> : details[i] : <span class="pending">{c.pending}</span>}</dd></div>)}</dl>
+  </div>
+  <div class="form-card">
+    <p id="inquiry-notice" class="form-notice"><Icon name="clock" size={20} /><span>{c.notice}</span></p>
+    <p id="required-note" class="required-note">{c.required}</p>
+    <!-- Fieldset deliberately has no form owner: even without JavaScript Enter cannot send data. -->
+    <fieldset class="inquiry-fields" aria-labelledby="contact-heading" aria-describedby="inquiry-notice required-note">
+      <div class="field"><label for="full-name">{c.name} <span aria-hidden="true">*</span></label><input id="full-name" type="text" required autocomplete="name" /></div>
+      <div class="field"><label for="company">{c.company} <span aria-hidden="true">*</span></label><input id="company" type="text" required autocomplete="organization" /></div>
+      <div class="field"><label for="email">{c.email} <span aria-hidden="true">*</span></label><input id="email" type="email" required autocomplete="email" /></div>
+      <div class="field"><label for="phone">{c.phone} <span aria-hidden="true">*</span></label><input id="phone" type="tel" required autocomplete="tel" /></div>
+      <div class="field field-wide"><label for="package">{c.package}</label><select id="package">{packages.map(pkg => <option value={pkg.id}>{pkg.id}</option>)}<option value="consultation" selected>{c.consultation}</option></select></div>
+      <div class="field field-wide"><label for="message">{c.message}</label><textarea id="message" rows="4"></textarea></div>
+      <div class="field-wide"><button type="button" class="button" aria-describedby="inquiry-notice">{c.send}<Icon name="arrow" size={18} /></button></div>
+    </fieldset>
+  </div>
+</div></section>
+<script>
+  const inquiry = document.querySelector('.inquiry-fields');
+  inquiry?.addEventListener('keydown', event => {
+    if (event instanceof KeyboardEvent && event.key === 'Enter' && event.target instanceof HTMLInputElement) event.preventDefault();
+  });
+  document.querySelectorAll<HTMLAnchorElement>('a[data-package]').forEach(link => {
+    link.addEventListener('click', () => {
+      const select = document.querySelector<HTMLSelectElement>('#package');
+      if (select) select.value = link.dataset.package!;
+    });
+  });
+</script>
+<style>
+  .contact-grid { display: grid; gap: 2.5rem; }
+  .business-details { display: grid; gap: 1.25rem; margin-top: 2rem; }
+  dt { font-size: .8rem; font-weight: 600; }
+  dd { margin: .3rem 0 0; font-size: .85rem; }
+  .pending { color: var(--muted); }
+  .form-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(1.2rem,3vw,2rem); }
+  .form-notice { background: var(--green-light); color: #14543f; padding: 1rem; margin-top: 0; border-radius: 6px; display: flex; align-items: flex-start; gap: .6rem; font-size: .78rem; }
+  .form-notice svg { flex-shrink: 0; margin-top: .15rem; }
+  .required-note { font-size: .72rem; color: var(--muted); }
+  .inquiry-fields { display: grid; gap: 1rem; border: 0; margin: 1.2rem 0 0; padding: 0; min-width: 0; }
+  .field { display: flex; flex-direction: column; gap: .4rem; min-width: 0; }
+  label { font-size: .76rem; font-weight: 550; }
+  input, select, textarea { width: 100%; border: 1px solid #b6c2cf; border-radius: 5px; background: var(--white); color: var(--navy); font: inherit; font-size: 1rem; padding: .7rem .8rem; min-height: 44px; }
+  textarea { resize: vertical; }
+  @media (min-width: 48rem) { .contact-grid { grid-template-columns: .85fr 1.15fr; gap: 3.5rem; } .inquiry-fields { grid-template-columns: repeat(2, minmax(0,1fr)); } .field-wide { grid-column: 1 / -1; } }
+</style>

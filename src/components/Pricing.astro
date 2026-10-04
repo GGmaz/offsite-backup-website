@@ -1,0 +1,46 @@
+---
+import Icon from './Icon.astro';
+import { packages } from '../content/packages';
+import type { Content } from '../content/types';
+interface Props { content: Content }
+const { pricing: p } = Astro.props.content;
+---
+<section id="pricing" class="section surface" aria-labelledby="pricing-heading"><div class="container">
+  <div class="section-intro centered"><p class="eyebrow">{p.eyebrow}</p><h2 id="pricing-heading">{p.title}</h2><p class="section-text">{p.text}</p></div>
+  <div class="pricing-grid">{packages.map((pkg, i) => <article class:list={['price-card', { recommended: pkg.recommended }]} aria-labelledby={`package-${pkg.id}`}>
+    <div class="recommendation">{pkg.recommended ? <><Icon name="check" size={16} />{p.recommended}</> : <span aria-hidden="true">&nbsp;</span>}</div>
+    <div class="price-content"><h3 id={`package-${pkg.id}`}>{pkg.id}</h3><p class="package-description">{p.descriptions[i]}</p><p class="price"><strong>€{pkg.price}</strong><span>{p.month}</span></p>
+    <dl>
+      <div><dt>{p.storage}</dt><dd>{p.upTo} {pkg.storage} TB</dd></div>
+      <div><dt>{p.daily}</dt><dd>{p.upTo} {pkg.daily} GB / {p.days === 'days' ? 'day' : 'dan'}</dd></div>
+      <div><dt>{p.retention}</dt><dd><strong>{pkg.days} {p.days}</strong></dd></div>
+      <div><dt>{p.rotation}</dt><dd>{p.rotations[i]}</dd></div>
+      <div><dt>{p.gui}</dt><dd>{pkg.gui ? p.included : p.cli}</dd></div>
+      <div><dt>{p.disk}</dt><dd>{pkg.id === 'Premium' ? p.annual.replace('{price}', String(pkg.disk)) : `€${pkg.disk} ${p.incident}`}</dd></div>
+      <div><dt>{p.setup}</dt><dd>€{pkg.setup}</dd></div>
+    </dl>
+    <a class:list={['button', { 'button-outline': !pkg.recommended }]} href="#contact" data-package={pkg.id}>{p.choose} {pkg.id}<Icon name="arrow" size={18} /></a>
+    </div>
+  </article>)}</div>
+  <div class="pricing-notes">{p.notes.map(note => <p>{note}</p>)}</div>
+</div></section>
+<style>
+  .pricing-grid { display: grid; gap: 1.4rem; margin-top: 3rem; }
+  .price-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+  .price-card.recommended { border: 2px solid var(--green-dark); box-shadow: 0 8px 28px #0a192f08; }
+  .recommendation { display: flex; align-items: center; justify-content: center; gap: .4rem; padding: .55rem; min-height: 35px; font-size: .7rem; font-weight: 650; }
+  .recommended .recommendation { background: var(--green-dark); color: white; }
+  .price-content { padding: 1.65rem; display: flex; flex-direction: column; flex: 1; }
+  h3 { font-size: 1.25rem; margin: 0; }
+  .package-description { font-size: .8rem; color: var(--muted); margin-block: .6rem 0; min-height: 2.8em; }
+  .price { display: flex; align-items: baseline; gap: .5rem; margin-block: 1.4rem 1.5rem; }
+  .price strong { font-size: 2.75rem; letter-spacing: -.05em; font-weight: 650; line-height: 1; }
+  .price span { color: var(--muted); font-size: .8rem; }
+  dl { padding: 0; margin: 0 0 1.8rem; flex: 1; }
+  dl > div { padding-block: .8rem; border-top: 1px solid var(--border); }
+  dt { color: var(--muted); font-size: .73rem; margin-bottom: .25rem; }
+  dd { margin: 0; font-size: .86rem; line-height: 1.55; }
+  .price-content .button { width: 100%; justify-content: space-between; }
+  .pricing-notes { max-width: 980px; margin: 1.8rem auto 0; font-size: .75rem; color: var(--muted); }
+  @media (min-width: 64rem) { .pricing-grid { grid-template-columns: repeat(3,1fr); } .recommended { transform: translateY(-8px); } }
+</style>

@@ -1,0 +1,19 @@
+---
+import type { Content } from '../content/types';
+interface Props { content: Content }
+const { faq: f } = Astro.props.content;
+---
+<section id="faq" class="section" aria-labelledby="faq-heading"><div class="container faq-container">
+  <div class="section-intro"><p class="eyebrow">{f.eyebrow}</p><h2 id="faq-heading">{f.title}</h2></div>
+  <div class="questions">{f.items.map(item => <details><summary>{item.question}<span class="plus" aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}</div>
+</div></section>
+<style>
+  .faq-container { max-width: 880px; }
+  .questions { margin-top: 2rem; border-top: 1px solid var(--border); }
+  details { border-bottom: 1px solid var(--border); }
+  summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; padding: 1.4rem .25rem; font-size: .95rem; font-weight: 600; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  .plus { font-weight: 400; font-size: 1.4rem; color: var(--green-dark); }
+  details[open] .plus { transform: rotate(45deg); }
+  details p { margin: 0; padding: 0 2.5rem 1.5rem .25rem; color: var(--muted); font-size: .88rem; }
+</style>

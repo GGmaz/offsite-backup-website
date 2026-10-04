@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+import type { Content } from '../content/types';
+interface Props { content: Content }
+const { benefits: b } = Astro.props.content;
+---
+<section id="benefits" class="section surface" aria-labelledby="benefits-heading"><div class="container">
+  <div class="section-intro"><p class="eyebrow">{b.eyebrow}</p><h2 id="benefits-heading">{b.title}</h2><p class="section-text">{b.text}</p></div>
+  <div class="benefit-grid">{b.cards.map((card, i) => <article><span class="card-icon"><Icon name={['clock', 'lock', 'tunnel', 'shield'][i]} size={25} /></span><div><h3>{card.title}</h3><p>{card.text}</p></div></article>)}</div>
+</div></section>
+<style>
+  .benefit-grid { display: grid; gap: 1rem; margin-top: 2.5rem; }
+  article { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(1.2rem,3vw,2rem); display: flex; align-items: flex-start; gap: 1.1rem; }
+  .card-icon { width: 48px; height: 48px; display: grid; place-items: center; background: var(--green-light); color: var(--green-dark); border-radius: 10px; flex-shrink: 0; }
+  h3 { margin-top: .25rem; margin-bottom: .7rem; }
+  article p { color: var(--muted); font-size: .88rem; margin: 0; }
+  @media (min-width: 48rem) { .benefit-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 24rem) { article { flex-direction: column; } }
+</style>

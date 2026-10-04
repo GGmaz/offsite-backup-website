@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+import type { Content } from '../content/types';
+interface Props { content: Content }
+const { technical: t } = Astro.props.content;
+---
+<figure class="architecture">
+  <ol>{t.diagram.map((label, i) => <li><span class="node"><Icon name={['video', 'lock', 'tunnel', 'server'][i]} size={26} /><span>{label}</span><small>{['01', '02', '03', '04'][i]}</small></span>{i < 3 && <span class="connector" aria-hidden="true">↓</span>}</li>)}</ol>
+  <figcaption>{t.description}</figcaption>
+</figure>
+<style>
+  .architecture { margin: 0; padding: clamp(1.25rem,3vw,2.5rem); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+  ol { list-style: none; padding: 0; margin: 0; }
+  .node { display: flex; gap: 1rem; align-items: center; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; font-size: .85rem; font-weight: 550; }
+  .node svg { color: var(--green-dark); flex-shrink: 0; }
+  .node small { margin-left: auto; font: .65rem ui-monospace,monospace; color: var(--muted); }
+  .connector { display: block; text-align: center; font-size: 1.3rem; color: var(--green-dark); padding-block: .35rem; }
+  figcaption { margin-top: 1.5rem; color: var(--muted); font-size: .75rem; line-height: 1.7; }
+</style>

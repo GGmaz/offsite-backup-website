@@ -1,0 +1,17 @@
+---
+import type { Content } from '../content/types';
+interface Props { content: Content }
+const { about: a } = Astro.props.content;
+---
+<section id="about" class="section" aria-labelledby="about-heading"><div class="container">
+  <div class="section-intro split-intro"><div><p class="eyebrow">{a.eyebrow}</p><h2 id="about-heading">{a.title}</h2></div><p class="section-text">{a.text}</p></div>
+  <ol class="steps">{a.steps.map((step, i) => <li><span class="step-number">0{i + 1}</span><h3>{step.title}</h3><p>{step.text}</p></li>)}</ol>
+</div></section>
+<style>
+  .steps { list-style: none; padding: 0; margin: 2.5rem 0 0; display: grid; gap: 2rem; }
+  .steps li { border-top: 1px solid var(--border); padding-top: 1.4rem; }
+  .step-number { font: .8rem ui-monospace,monospace; color: var(--green-dark); letter-spacing: .08em; }
+  h3 { margin-block: .8rem .6rem; }
+  li p { font-size: .9rem; color: var(--muted); margin: 0; }
+  @media (min-width: 48rem) { .steps { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; } }
+</style>

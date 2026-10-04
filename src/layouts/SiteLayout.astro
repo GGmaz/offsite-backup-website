@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+import { site, path, localePath, absolute, type Locale } from '../config/site';
+import type { Content } from '../content/types';
+interface Props { content: Content; locale: Locale }
+const { content: c, locale } = Astro.props;
+const lang = locale === 'sr' ? 'sr-Latn' : 'en';
+const fontStyles = `@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('${path('fonts/inter-latin.woff2')}') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('${path('fonts/inter-latin-ext.woff2')}') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+`;
+const canonical = absolute(localePath(locale));
+// Organization / Service JSON-LD awaits confirmed legal business details.
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0A192F" />
+    <style is:inline set:html={fontStyles} />
+    <title>{c.title}</title>
+    <meta name="description" content={c.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="sr-Latn" href={absolute(localePath('sr'))} />
+    <link rel="alternate" hreflang="en" href={absolute(localePath('en'))} />
+    <link rel="alternate" hreflang="x-default" href={absolute(localePath('sr'))} />
+    <link rel="icon" type="image/svg+xml" href={path('favicon.svg')} />
+    <link rel="preload" href={path('fonts/inter-latin.woff2')} as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={c.title} />
+    <meta property="og:description" content={c.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale === 'sr' ? 'sr_RS' : 'en_GB'} />
+    <meta property="og:locale:alternate" content={locale === 'sr' ? 'en_GB' : 'sr_RS'} />
+    <meta property="og:image" content={absolute(path(`social-preview-${locale}.png`))} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={c.hero.title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={c.title} />
+    <meta name="twitter:description" content={c.description} />
+    <meta name="twitter:image" content={absolute(path(`social-preview-${locale}.png`))} />
+  </head>
+  <body id="top"><a class="skip-link" href="#main">{c.skip}</a><slot /></body>
+</html>

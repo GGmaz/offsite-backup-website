@@ -1,0 +1,70 @@
+import type { Content } from './types';
+export const sr: Content = {
+  title: 'Offsite Backup | Siguran backup snimaka tehničkih pregleda',
+  description: 'Šifrovani backup video-snimaka tehničkih pregleda na udaljenoj lokaciji. Uporedite Basic, Standard i Premium pakete, prostor, čuvanje i oporavak.',
+  skip: 'Pređi na sadržaj', navLabel: 'Glavna navigacija', menu: 'Meni', close: 'Zatvori meni',
+  nav: ['O usluzi', 'Tehničke specifikacije', 'Paketi i cene', 'Česta pitanja'], quote: 'Zatražite ponudu',
+  hero: {
+    eyebrow: 'BACKUP ZA CENTRE ZA TEHNIČKI PREGLED',
+    title: 'Siguran backup video-snimaka tehničkih pregleda na udaljenoj lokaciji.',
+    text: 'Sačuvajte šifrovanu kopiju van svojih prostorija. Planirani inkrementalni prenosi i jasne opcije čuvanja pomažu vam da pripremite snimke koji će vam možda zatrebati sutra.',
+    pricing: 'Pogledajte pakete i cene', consult: 'Zakažite konsultacije',
+    highlights: ['Šifrovanje na klijentu uz Restic', '365 dana uz Standard; produženo čuvanje uz Premium prema ugovorenim uslovima', 'Šifrovani prenos kroz WireGuard VPN'],
+    diagramLabel: 'Vaši snimci, zaštićeni i van vaših prostorija', remote: 'Udaljeno skladište', client: 'Centar za tehnički pregled', encrypted: 'Šifrovano pre slanja', schedule: 'Planirano · Inkrementalno · Udaljeno',
+  },
+  about: {
+    eyebrow: 'PRILAGOĐENO VAŠEM POSLOVANJU', title: 'Druga kopija. Pouzdaniji plan oporavka.',
+    text: 'Za centre za tehnički pregled kojima je potrebno čuvanje video-snimaka izvan jednog DVR uređaja ili lokalnog diska. Podešavamo udaljeni backup prema količini snimaka, internet vezi i izabranom periodu čuvanja.',
+    steps: [
+      { title: 'Podešavanje', text: 'Dogovaramo paket, raspored pravljenja kopija i politiku čuvanja za vašu lokaciju.' },
+      { title: 'Šifrovanje i prenos', text: 'Restic šifruje snimke lokalno, a zatim prenosi inkrementalne kopije kroz WireGuard tunel.' },
+      { title: 'Čuvanje i oporavak', text: 'Dostupne kopije čuvaju se u okviru limita paketa. Kada zatrebaju, snimci se vraćaju uz vaš ključ za šifrovanje.' },
+    ],
+  },
+  benefits: {
+    eyebrow: 'MANJI RIZIK. VIŠE KONTROLE.', title: 'Udaljeni backup kao deo svakodnevnog rada.',
+    text: 'Praktičan sloj zaštite za snimke od kojih zavisi vaše poslovanje.',
+    cards: [
+      { title: 'Čuvanje prema vašim potrebama', text: 'Automatsko čuvanje prati izabrani paket: 180 dana uz Basic, 365 dana uz Standard ili produženo čuvanje uz Premium prema odobrenim uslovima. Važeće zakonske obaveze moraju se posebno potvrditi.' },
+      { title: 'Privatnost počinje kod vas', text: 'Snimci se šifruju na klijentu pre slanja. Za oporavak je potreban vaš ključ za šifrovanje; način čuvanja ključa i postupak oporavka dogovaraju se pre početka usluge.' },
+      { title: 'Prenos po vašem rasporedu', text: 'Inkrementalni backup prenosi promene. Raspored prenosa i ograničenje protoka smanjuju ometanje pregleda; backup ipak koristi mrežne i hardverske resurse.' },
+      { title: 'Oporavak izvan lokalnog diska', text: 'Udaljene kopije pomažu pri kvaru DVR uređaja ili diska, oštećenju opreme i krađi. Oporavak zavisi od uspešnih kopija, sačuvanih podataka i dostupnog ključa za šifrovanje.' },
+    ],
+  },
+  technical: {
+    eyebrow: 'OD SNIMKA DO REZERVNE KOPIJE', title: 'Šifrovano lokalno. Sačuvano udaljeno.',
+    text: 'Jasna arhitektura sa zaštitom ugrađenom u svaki prenos.',
+    diagram: ['Centar za tehnički pregled', 'Šifrovanje na klijentu', 'WireGuard tunel', 'Udaljeno šifrovano skladište'],
+    description: 'Snimci iz centra za tehnički pregled šifruju se na klijentu, prolaze kroz WireGuard VPN tunel i stižu u udaljeno šifrovano skladište.',
+    items: [
+      { title: 'Restic šifrovanje', text: 'AES-256 šifrovanje uz Poly1305-AES autentikaciju štiti repozitorijum rezervnih kopija.' },
+      { title: 'Namenski WireGuard prenos', text: 'VPN tunel povezuje lokaciju korisnika sa udaljenim serverom za šifrovani prenos.' },
+      { title: 'Planiranje količine snimaka', text: 'Okvirna količina je oko 10 GB dnevno po liniji tehničkog pregleda. Stvarna potrošnja zavisi od podešavanja snimanja i mora biti u okviru limita izabranog paketa.' },
+      { title: 'Automatsko čuvanje', text: 'Dostupne kopije rotiraju se prema dogovorenoj politici, a podaci kojima je istekao period čuvanja brišu se radi oslobađanja prostora. Politika čuvanja ne može nadoknaditi propušten backup.' },
+      { title: 'Samostalni pristup uz Premium', text: 'Premium uključuje pregled i preuzimanje snimaka kroz grafički interfejs. Tačan proizvod i način čuvanja ključeva čekaju potvrdu.' },
+    ],
+  },
+  pricing: {
+    eyebrow: 'JASNI LIMITI PAKETA', title: 'Izaberite prostor i period čuvanja.',
+    text: 'Tri paketa. Jasni limiti. Pomažemo vam da ih uskladite sa obimom pregleda.',
+    recommended: 'Preporučeno', month: '/ mesečno', upTo: 'Do', storage: 'Prostor', daily: 'Dnevni rast', retention: 'Čuvanje', days: 'dana', rotation: 'Rotacija',
+    rotations: ['Kružna FIFO rotacija', 'Automatsko dnevno kružno čuvanje', 'Kružna rotacija + arhiva'], gui: 'Samostalni grafički pristup', included: 'Uključen', cli: 'Ne; samo CLI', disk: 'Oporavak putem fizičkog diska', incident: '/ slučaj', annual: 'Jednom godišnje uključeno; zatim €{price}', setup: 'Jednokratno podešavanje', choose: 'Izaberite',
+    descriptions: ['Za kraći period čuvanja.', 'Za godinu dana sačuvanih kopija.', 'Za veći obim i samostalni pristup.'],
+    notes: ['Basic obezbeđuje 180 dana (6 meseci), a ne 365 dana čuvanja. Standard obezbeđuje 365 dana (1 godinu). Period se odnosi na uspešno napravljene i zadržane kopije, nakon što se arhiva popuni.', 'Trajanje produžene Premium arhive, obuhvat limita, porezi, prekoračenja i komercijalni uslovi zahtevaju potvrdu. Standard koristi kružno skladište. Pri 25 GB dnevno, godina dostiže oko 9,13 TB pre dodatnih podataka, pa je prostor za produženu arhivu u okviru 10 TB ograničen.'],
+  },
+  faq: {
+    eyebrow: 'KORISNO JE ZNATI', title: 'Nekoliko pitanja pre početka.', items: [
+      { question: 'Šta ako izgubim lozinku za šifrovanje?', answer: 'Za oporavak je potreban ključ ili lozinka za šifrovanje. Prema predloženom modelu u kome korisnik kontroliše ključ, pružalac usluge bez njega ne može dešifrovati snimke. Stvarni način čuvanja ključa i oporavka, uključujući Premium pristup, mora se potvrditi pre pokretanja.' },
+      { question: 'Šta ako inspektor zatraži snimak od pre osam meseci?', answer: 'Standard i Premium predviđaju period koji pokriva osam meseci nakon što se arhiva popuni, pod uslovom da je snimak uspešno kopiran i zadržan. Basic prozor od 180 dana ne pokriva osam meseci. Politika čuvanja ne garantuje snimke za dane kada backup nije uspeo.' },
+      { question: 'Da li će backup usporiti internet tokom pregleda?', answer: 'Prenos se može planirati van radnog vremena i ograničiti protokom kako bi se smanjilo ometanje. Inkrementalni backup smanjuje ponovljene prenose, ali i dalje koristi internet vezu i lokalne hardverske resurse.' },
+    ],
+  },
+  contact: {
+    eyebrow: 'ISPLANIRAJMO VAŠ BACKUP', title: 'Počnimo od vašeg centra.',
+    text: 'Opišite količinu snimaka i potreban period čuvanja da biste izabrali odgovarajući paket.',
+    details: ['Adresa', 'Telefon podrške', 'Email', 'Radno vreme'], pending: 'Biće potvrđeno pre pokretanja',
+    notice: 'Online upiti još nisu dostupni. Kontaktirajte nas putem emaila ili telefona. Kontakt podaci biće dodati pre pokretanja.',
+    required: 'Polja označena sa * biće obavezna kada slanje upita bude dostupno.', name: 'Ime i prezime', company: 'Kompanija / centar za tehnički pregled', email: 'Email adresa', phone: 'Broj telefona', package: 'Paket', consultation: 'Potrebne su konsultacije', message: 'Poruka / dodatna pitanja', send: 'Pošaljite upit',
+  },
+  footer: { description: 'Šifrovane kopije snimaka. Van vaših prostorija.', pending: 'Pravni naziv kompanije čeka potvrdu.', top: 'Na vrh stranice', languages: 'Jezik', copyright: 'Sva prava zadržana.' },
+};

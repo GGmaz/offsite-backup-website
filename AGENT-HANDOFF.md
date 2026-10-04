@@ -1,6 +1,6 @@
 # Offsite Backup website — implementation handoff
 
-> Update 2026-10-04: The owner now manages Pages publishing from `main` in GitHub settings and requested removal of the project's deployment configuration. The custom Actions workflow and `PAGES_LAUNCH_APPROVED` gate have been removed. Do not recreate them from the original plan below. Keep Astro's origin/base settings for correct URLs. Branch publishing needs generated HTML; `dist/` remains ignored. See the current README for build and publishing details.
+> Update 2026-10-04: The owner now manages Pages publishing from `main` in GitHub settings and requested removal of the project's deployment configuration. The custom Actions workflow and `PAGES_LAUNCH_APPROVED` gate have been removed. Do not recreate them from the original plan below. Keep Astro's origin/base settings for correct URLs. Branch publishing uses generated HTML/assets committed at the repository root and `.nojekyll`. `npm run build` refreshes these files; `dist/` remains ignored. See the current README for build and publishing details.
 
 ## Start here
 

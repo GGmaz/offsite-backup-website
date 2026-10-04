@@ -18,3 +18,9 @@ Lighthouse 13.5.0 was run against the local production preview with its default 
 | English | 100 | 100 | 100 | 100 |
 
 These are local measurements; deployed network/cache behavior may differ. Raw reports are available in ignored `reports/` after `npm run audit`. See README for the unresolved upstream dependency advisory and launch prerequisites. No external messages were sent, no site was published, and Pages settings were not changed.
+
+## Branch publishing fix — 2026-10-04
+
+The Jekyll error was caused by publishing uncompiled Astro source from the main branch root. `npm run build` now exports the generated site to the root and adds `.nojekyll` for branch publishing. All 11 exported files were compared byte-for-byte with `dist/`.
+
+The 10 Playwright smoke/accessibility tests passed against a plain static HTTP server serving only those exported files (`PLAYWRIGHT_BASE_URL=http://127.0.0.1:4323`). The export test passed for both-language output, stale asset cleanup, source preservation and rejection of unsafe manifest entries. Astro checks passed with zero errors/warnings/hints. The earlier Lighthouse measurements were not rerun for this publishing-only change.

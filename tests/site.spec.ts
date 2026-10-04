@@ -81,9 +81,9 @@ test('assets and SEO use the deployment base', async ({ page, request }) => {
   expect(await (await request.get(base + 'robots.txt')).text()).toContain(`https://ggmaz.github.io${base}sitemap.xml`);
 });
 test('without JavaScript navigation and inert fields still work', async ({ browser }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, reducedMotion: 'reduce' });
+  const context = await browser.newContext({ baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4321', javaScriptEnabled: false, reducedMotion: 'reduce' });
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:4321' + base);
+  await page.goto(base);
   await page.locator('#main-nav a[href="#pricing"]').click();
   await page.locator('a[data-package="Basic"]').click();
   const url = page.url();

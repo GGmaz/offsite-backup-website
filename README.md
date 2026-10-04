@@ -17,14 +17,17 @@ Open `http://localhost:4321/offsite-backup-website/`, or append `en/` for Englis
 
 ```sh
 npm run check       # Astro and TypeScript diagnostics
-npm run build       # Static output in dist/
+npm run build       # Static output in dist/ and the tracked Pages files at root
 npm run preview     # Preview the production build
 npx playwright install chromium
 npm test            # Production browser smoke tests and axe accessibility checks
+npm run test:pages   # Root export and safe stale-file cleanup checks
 npm run audit       # Lighthouse; start the production preview first
 ```
 
 Astro 7 may start a background preview when run by an agent. `npm run preview -- stop` stops it. Use `npm run preview -- --ignore-lock --host 127.0.0.1` for a foreground instance. Tests manage their own preview unless one is already available. Set `CHROME_PATH=/path/to/chrome` for an existing Chrome installation; otherwise Playwright uses its installed Chromium. Set `ASTRO_TELEMETRY_DISABLED=1` to disable Astro tooling telemetry, as CI does.
+
+Set `PLAYWRIGHT_BASE_URL` to test an already-running static server with the same site base path.
 
 Lighthouse writes local HTML/JSON reports to `reports/`; Playwright screenshots go to `test-results/`. Both directories are ignored by Git. `npm audit` is the dependency security audit; `npm run audit` measures page quality.
 
@@ -61,9 +64,11 @@ Configured production URLs:
 
 The repository owner manages GitHub Pages publishing from `main` in GitHub settings. The project contains no custom deployment workflow or publication gate.
 
-`npm run build` generates the website in `dist/`. GitHub Pages branch publishing must serve this generated HTML and its assets from the selected branch folder; it does not build Astro source. Build output remains ignored by Git, so pushing source alone does not publish the generated website.
+`npm run build` compiles Astro into `dist/`, then copies the generated pages and assets to the repository root for **main / (root)** branch publishing. The root `.nojekyll` file disables Jekyll processing so Astro source frontmatter is not treated as YAML. Generated root files are committed alongside source; `dist/` remains ignored.
 
-The Astro origin and base path are retained for correct asset links, locale routes and canonical URLs. A custom domain would require updating `site.origin` and `site.base`. After publishing built output, check both locale routes, direct refresh, fonts and package CTAs. Roll back source changes with a revert and rebuild the published output.
+After editing content, run `npm run check` and `npm run build`, then commit and push all changes. Edit `src/` and `public/`, not generated root HTML/assets. `scripts/prepare-pages.mjs` records generated files in `.pages-files.json` and removes only obsolete files listed there. The `$push` shortcut rebuilds before staging so published files stay current.
+
+The Astro origin and base path are retained for correct asset links, locale routes and canonical URLs. A custom domain would require updating `site.origin` and `site.base`. After pushing, check both locale routes, direct refresh, fonts and package CTAs. Roll back with a revert and rebuild before pushing.
 
 ## Launch dependencies
 

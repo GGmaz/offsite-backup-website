@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ggmaz.github.io/offsite-backup-website/sitemap.xml

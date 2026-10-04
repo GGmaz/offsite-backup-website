@@ -10,10 +10,11 @@
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
-    "build": "astro build",
+    "build": "astro build && node scripts/prepare-pages.mjs",
     "preview": "astro preview",
     "test": "playwright test",
-    "audit": "node scripts/audit.mjs"
+    "audit": "node scripts/audit.mjs",
+    "test:pages": "node --test tests/prepare-pages.test.mjs"
   },
   "dependencies": {
     "astro": "7.3.5"

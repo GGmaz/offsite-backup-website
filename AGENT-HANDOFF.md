@@ -1,5 +1,7 @@
 # Offsite Backup website — implementation handoff
 
+> Update 2026-10-04: The owner now manages Pages publishing from `main` in GitHub settings and requested removal of the project's deployment configuration. The custom Actions workflow and `PAGES_LAUNCH_APPROVED` gate have been removed. Do not recreate them from the original plan below. Keep Astro's origin/base settings for correct URLs. Branch publishing needs generated HTML; `dist/` remains ignored. See the current README for build and publishing details.
+
 ## Start here
 
 The user requested this handoff so a new agent in a new session can start coding the website. Implement the plan below; do not restart planning or ask the user to repeat decisions already recorded here. Read any applicable repository instructions first.

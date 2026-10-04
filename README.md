@@ -30,7 +30,7 @@ Lighthouse writes local HTML/JSON reports to `reports/`; Playwright screenshots 
 
 ## Codex push shortcut
 
-Invoke `$push` in Codex to stage all repository changes, create a short descriptive commit, and push the current branch. The repo-scoped skill lives in `.agents/skills/push/SKILL.md` and travels with the repository. This is a local Codex workflow; GitHub Actions runs after a push according to the existing workflow and deployment gate.
+Invoke `$push` in Codex to stage all repository changes, create a short descriptive commit, and push the current branch. The repo-scoped skill lives in `.agents/skills/push/SKILL.md` and travels with the repository.
 
 ## Content and configuration
 
@@ -59,16 +59,11 @@ Configured production URLs:
 - Serbian: `https://ggmaz.github.io/offsite-backup-website/`
 - English: `https://ggmaz.github.io/offsite-backup-website/en/`
 
-`.github/workflows/deploy.yml` runs `npm ci`, checks, builds and browser tests on pull requests and main pushes. Pull requests have read-only permissions and never deploy. Main pushes and manual dispatch deploy `dist/` through official Pages artifact/deploy actions **only when repository variable `PAGES_LAUNCH_APPROVED` equals `true`**. This gate keeps the unfinished business content and unconfirmed hosting eligibility from being published accidentally. Only the deployment job has Pages write and OIDC permissions; deployments are serialized.
+The repository owner manages GitHub Pages publishing from `main` in GitHub settings. The project contains no custom deployment workflow or publication gate.
 
-Before enabling publication:
+`npm run build` generates the website in `dist/`. GitHub Pages branch publishing must serve this generated HTML and its assets from the selected branch folder; it does not build Astro source. Build output remains ignored by Git, so pushing source alone does not publish the generated website.
 
-1. Confirm the launch content and [commercial-use eligibility under GitHub Pages policy](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits). This landing page may fall within the commercial-use restriction even without checkout.
-2. In repository **Settings → Pages → Build and deployment**, select **GitHub Actions**. Configure the `github-pages` environment with approval rules if desired.
-3. Set `PAGES_LAUNCH_APPROVED=true` in repository Actions variables only after publication is authorized and hosting eligibility is confirmed, then dispatch the workflow on main or push an approved change.
-4. Confirm HTTPS is enabled. Check direct loading and refresh of both locale URLs, fonts, language links, sitemap, mobile navigation and package CTAs on the deployed site.
-
-No publication or push was performed during implementation. Roll back by reverting the relevant commit and letting the main workflow rebuild/deploy; avoid rewriting Git history. A custom domain is deferred and would require updating `site.origin` and `site.base`, domain/DNS settings, metadata and route verification. See [Astro’s GitHub Pages guide](https://docs.astro.build/en/guides/deploy/github/).
+The Astro origin and base path are retained for correct asset links, locale routes and canonical URLs. A custom domain would require updating `site.origin` and `site.base`. After publishing built output, check both locale routes, direct refresh, fonts and package CTAs. Roll back source changes with a revert and rebuild the published output.
 
 ## Launch dependencies
 

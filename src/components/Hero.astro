@@ -10,8 +10,8 @@ const { hero: h } = Astro.props.content;
   <div class="container hero-content">
     <div class="hero-copy">
       <p class="eyebrow">{h.eyebrow}</p>
-      <h1 id="hero-heading"><strong>OFFSITE BACKUP</strong><span>{h.displayTitle}</span></h1>
-      <p class="hero-description">{h.text}</p>
+      <h1 id="hero-heading"><strong>LAN-ICT</strong><span>OFFSITE<br />{h.displayTitle}</span></h1>
+      {h.text.split("\n\n").map(paragraph => <p class="hero-description">{paragraph}</p>)}
       <div class="hero-buttons"><a class="button" href="#pricing">{h.pricing}<Icon name="arrow" size={21} /></a><a class="how-link" href="#technical"><span class="play-circle"><Icon name="play" size={18} /></span><span>{h.how}</span></a></div>
     </div>
   </div>

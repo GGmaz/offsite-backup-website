@@ -5,7 +5,7 @@ export interface Content {
   about: { eyebrow: string; title: string; text: string; steps: {title: string; text: string}[] };
   benefits: { eyebrow: string; title: string; text: string; cards: {title: string; text: string}[] };
   technical: { eyebrow: string; title: string; text: string; diagram: string[]; description: string; items: {title: string; text: string}[] };
-  pricing: { eyebrow: string; title: string; text: string; recommended: string; month: string; upTo: string; storage: string; daily: string; retention: string; days: string; rotation: string; rotations: string[]; gui: string; included: string; cli: string; disk: string; incident: string; annual: string; setup: string; choose: string; notes: string[]; descriptions: string[] };
+  pricing: { eyebrow: string; title: string; text: string; recommended: string; month: string; upTo: string; storage: string; retention: string; from: string; retentions: [string, string, string]; gui: string; included: string; cli: string; disk: string; incident: string; annual: string; setup: string; choose: string; descriptions: string[] };
   faq: { eyebrow: string; title: string; items: {question: string; answer: string}[] };
   contact: { eyebrow: string; title: string; text: string; details: string[]; pending: string; notice: string; required: string; name: string; company: string; email: string; phone: string; package: string; consultation: string; message: string; send: string };
   footer: { description: string; pending: string; top: string; languages: string; copyright: string };

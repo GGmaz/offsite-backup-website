@@ -11,10 +11,8 @@ const { pricing: p } = Astro.props.content;
     <div class="recommendation">{pkg.recommended ? <><Icon name="check" size={16} />{p.recommended}</> : <span aria-hidden="true">&nbsp;</span>}</div>
     <div class="price-content"><h3 id={`package-${pkg.id}`}>{pkg.id}</h3><p class="package-description">{p.descriptions[i]}</p><p class="price"><strong>€{pkg.price}</strong><span>{p.month}</span></p>
     <dl>
-      <div><dt>{p.storage}</dt><dd>{p.upTo} {pkg.storage} TB</dd></div>
-      <div><dt>{p.daily}</dt><dd>{p.upTo} {pkg.daily} GB / {p.days === 'days' ? 'day' : 'dan'}</dd></div>
-      <div><dt>{p.retention}</dt><dd><strong>{pkg.days} {p.days}</strong></dd></div>
-      <div><dt>{p.rotation}</dt><dd>{p.rotations[i]}</dd></div>
+      <div><dt>{p.storage}</dt><dd>{pkg.id === 'Premium' ? p.from : p.upTo} {pkg.storage} TB</dd></div>
+      <div><dt>{p.retention}</dt><dd><strong>{p.retentions[i]}</strong></dd></div>
       <div><dt>{p.gui}</dt><dd>{pkg.gui ? p.included : p.cli}</dd></div>
       <div><dt>{p.disk}</dt><dd>{pkg.id === 'Premium' ? p.annual.replace('{price}', String(pkg.disk)) : `€${pkg.disk} ${p.incident}`}</dd></div>
       <div><dt>{p.setup}</dt><dd>€{pkg.setup}</dd></div>
@@ -22,7 +20,6 @@ const { pricing: p } = Astro.props.content;
     <a class:list={['button', { 'button-outline': !pkg.recommended }]} href="#contact" data-package={pkg.id}>{p.choose} {pkg.id}<Icon name="arrow" size={18} /></a>
     </div>
   </article>)}</div>
-  <div class="pricing-notes">{p.notes.map(note => <p>{note}</p>)}</div>
 </div></section>
 <style>
   .pricing-grid { display: grid; gap: 1.4rem; margin-top: 3rem; }
@@ -41,6 +38,5 @@ const { pricing: p } = Astro.props.content;
   dt { color: var(--muted); font-size: .73rem; margin-bottom: .25rem; }
   dd { margin: 0; font-size: .86rem; line-height: 1.55; }
   .price-content .button { width: 100%; justify-content: space-between; }
-  .pricing-notes { max-width: 980px; margin: 1.8rem auto 0; font-size: .75rem; color: var(--muted); }
   @media (min-width: 64rem) { .pricing-grid { grid-template-columns: repeat(3,1fr); } .recommended { transform: translateY(-8px); } }
 </style>

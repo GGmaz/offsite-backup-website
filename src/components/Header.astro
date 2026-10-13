@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { site, localePath, type Locale } from '../config/site';
+import { site, path, localePath, type Locale } from '../config/site';
 import type { Content } from '../content/types';
 interface Props { content: Content; locale: Locale }
 const { content: c, locale } = Astro.props;
@@ -8,7 +8,7 @@ const ids = ['about', 'technical', 'pricing', 'faq'];
 ---
 <header class="header">
   <div class="container header-inner">
-    <a class="wordmark" href={localePath(locale)} aria-label={site.name}><span class="brand-lockup"><span class="brand-icon"><Icon name="lock" size={32} /></span><span class="brand-type"><span>OFFSITE BACKUP</span><small>VIDEO BACKUP SOLUTION</small></span></span></a>
+    <a class="wordmark" href={localePath(locale)} aria-label={site.name}><span class="brand-lockup"><img class="brand-logo" src={path('images/lan-ict-logo.png')} width="573" height="533" alt="" /><span class="brand-type"><span>LAN-ICT</span><small>OFFSITE DATA BACKUP</small></span></span></a>
     <button class="menu-toggle" hidden aria-expanded="false" aria-controls="main-nav" data-open={c.menu} data-close={c.close}>{c.menu}<span aria-hidden="true">☰</span></button>
     <nav id="main-nav" aria-label={c.navLabel}>
       <div class="nav-links">{ids.map((id, i) => <a href={`#${id}`}>{c.nav[i]}</a>)}</div>
@@ -43,9 +43,9 @@ const ids = ['about', 'technical', 'pricing', 'faq'];
   .header-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; min-height: 100px; gap: 1rem; padding-block: 1rem; }
   .wordmark { display: inline-flex; align-items: center; gap: .8rem; color: var(--navy); font-size: clamp(1rem,2vw,1.7rem); font-weight: 750; text-decoration: none; white-space: nowrap; letter-spacing: -.04em; }
   .brand-lockup { display: inline-flex; align-items: center; gap: .6rem; }
+  .brand-logo { display: block; width: 68px; height: auto; flex-shrink: 0; }
   .brand-type { display: flex; flex-direction: column; line-height: 1.15; letter-spacing: -.02em; }
   .brand-type small { font-size: .55em; font-weight: 500; margin-top: .25rem; letter-spacing: .03em; }
-  .brand-icon { color: #114178; display: grid; place-items: center; width: 57px; height: 57px; border: 2px solid #93bad7; border-radius: 50%; background: linear-gradient(130deg,#fff 5%,#cedeea 30%,#fff 48%,#89adca 85%); box-shadow: inset 0 0 0 4px #f8fbff, inset 0 0 0 6px #174b80, 0 3px 8px #072b6219; flex-shrink: 0; }
   nav { width: 100%; }
   .nav-links, .header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem 1rem; }
   .nav-links a { font-size: .72rem; font-weight: 650; text-transform: uppercase; letter-spacing: .025em; text-decoration: none; padding-block: .8rem; }
@@ -56,7 +56,7 @@ const ids = ['about', 'technical', 'pricing', 'faq'];
   .menu-toggle { align-items: center; gap: .65rem; background: var(--white); border: 1px solid var(--border); border-radius: .4rem; padding: .7rem; color: var(--navy); font: inherit; font-size: .85rem; min-height: 44px; }
   .menu-toggle:not([hidden]) { display: inline-flex; }
   nav.enhanced { display: none; }
-  @media (max-width: 24rem) { .brand-icon { width: 44px; height: 44px; } .header-inner { gap: .5rem; } .wordmark { gap: .45rem; } }
+  @media (max-width: 24rem) { .brand-logo { width: 48px; } .header-inner { gap: .5rem; } .wordmark { gap: .45rem; } }
   nav.enhanced.is-open { display: block; }
   @media (min-width: 75rem) {
     .header-inner { flex-wrap: nowrap; gap: 1.5rem; }

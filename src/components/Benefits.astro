@@ -6,7 +6,7 @@ const { benefits: b } = Astro.props.content;
 ---
 <section id="benefits" class="section surface" aria-labelledby="benefits-heading"><div class="container">
   <div class="section-intro"><p class="eyebrow">{b.eyebrow}</p><h2 id="benefits-heading">{b.title}</h2><p class="section-text">{b.text}</p></div>
-  <div class="benefit-grid">{b.cards.map((card, i) => <article><span class="card-icon"><Icon name={['clock', 'lock', 'tunnel', 'shield'][i]} size={25} /></span><div><h3>{card.title}</h3><p>{card.text}</p></div></article>)}</div>
+  <div class="benefit-grid">{b.cards.map((card, i) => <article><span class="card-icon"><Icon name={['clock', 'lock', 'tunnel', 'shield'][i]} size={25} /></span><div><h3>{card.title}</h3>{card.text.split("\n\n").map(paragraph => <p>{paragraph}</p>)}</div></article>)}</div>
 </div></section>
 <style>
   .benefit-grid { display: grid; gap: 1rem; margin-top: 2.5rem; }

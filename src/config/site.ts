@@ -1,5 +1,5 @@
 export const site = {
-  name: 'Offsite Backup',
+  name: 'LAN-ICT',
   origin: 'https://ggmaz.github.io',
   base: '/offsite-backup-website',
   business: {

@@ -4,10 +4,12 @@ interface Props { content: Content }
 const { about: a } = Astro.props.content;
 ---
 <section id="about" class="section" aria-labelledby="about-heading"><div class="container">
-  <div class="section-intro split-intro"><div><p class="eyebrow">{a.eyebrow}</p><h2 id="about-heading">{a.title}</h2></div><p class="section-text">{a.text}</p></div>
+  <div class="section-intro split-intro"><div><p class="eyebrow">{a.eyebrow}</p><h2 id="about-heading">{a.title}</h2></div><div class="about-description">{a.text.split("\n\n").map(paragraph => <p class="section-text">{paragraph}</p>)}</div></div>
   <ol class="steps">{a.steps.map((step, i) => <li><span class="step-number">0{i + 1}</span><h3>{step.title}</h3><p>{step.text}</p></li>)}</ol>
 </div></section>
 <style>
+  .about-description p { margin: 0; }
+  .about-description p + p { margin-top: 1rem; }
   .steps { list-style: none; padding: 0; margin: 2.5rem 0 0; display: grid; gap: 2rem; }
   .steps li { border-top: 1px solid var(--border); padding-top: 1.4rem; }
   .step-number { font: .8rem ui-monospace,monospace; color: var(--blue-dark); letter-spacing: .08em; }

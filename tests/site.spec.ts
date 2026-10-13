@@ -164,6 +164,11 @@ for (const locale of ['', 'en/']) {
     await expect(page.locator('#technical-panel-3 h3')).toHaveCount(2);
     await technicalButtons.nth(3).click();
     await expect(page.locator('#technical-panel-3')).toBeHidden();
+    await expect(technicalButtons.nth(3)).toHaveAttribute('aria-expanded', 'false');
+    if (await page.evaluate(() => matchMedia('(hover: none)').matches)) {
+      await expect(technicalButtons.nth(3)).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+      await expect(technicalButtons.nth(3)).toHaveCSS('border-top-color', 'rgb(220, 229, 240)');
+    }
     const prices = page.locator('.pricing-grid [data-accordion-toggle]');
     await expect(prices.first().locator('.expand-chevron')).toBeVisible();
     for (const button of await prices.all()) await expect(button).toHaveAttribute('aria-expanded', 'false');

@@ -56,7 +56,10 @@ const stepDetails = [
   .node small { margin-left: auto; font: .65rem ui-monospace,monospace; color: var(--muted); }
   .connector { display: block; text-align: center; font-size: 1.3rem; color: var(--blue-dark); padding-block: .35rem; }
   button.node { display: flex; width: 100%; text-align: left; color: var(--navy); font-family: inherit; line-height: inherit; }
-  button.node:hover, button.node[aria-expanded="true"] { border-color: var(--blue); background: var(--blue-light); }
+  button.node[aria-expanded="true"] { border-color: var(--blue); background: var(--blue-light); }
+  @media (hover: hover) and (pointer: fine) {
+    button.node:hover { border-color: var(--blue); background: var(--blue-light); }
+  }
   .step-details { padding: 1.1rem .25rem .5rem; }
   .step-details h3 { font-size: .9rem; margin: 0 0 .6rem; }
   .step-details h3:not(:first-child) { margin-top: 1.25rem; }

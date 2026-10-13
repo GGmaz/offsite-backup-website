@@ -7,13 +7,24 @@ const t = c.technical;
 ---
 <section id="technical" class="section" aria-labelledby="technical-heading"><div class="container">
   <div class="section-intro"><p class="eyebrow">{t.eyebrow}</p><h2 id="technical-heading">{t.title}</h2><p class="section-text">{t.text}</p></div>
-  <div class="technical-grid"><ArchitectureDiagram content={c} /><div class="technical-items">{t.items.map((item) => <div><h3>{item.title}</h3>{item.text.split("\n\n").map(paragraph => <p>{paragraph}</p>)}</div>)}</div></div>
+  <div class="technical-grid">
+    <div class="diagram-home"><ArchitectureDiagram content={c} /></div>
+    <div class="technical-items">{t.items.map(item => <div>
+      <h3>{item.title}</h3>
+      {item.text.split("\n\n").map(paragraph => <p>{paragraph}</p>)}
+    </div>)}</div>
+  </div>
 </div></section>
 <style>
   .technical-grid { display: grid; gap: 2rem; margin-top: 2.5rem; align-items: start; }
   .technical-items { display: grid; gap: 1.25rem; }
   .technical-items > div { padding-bottom: 1.1rem; border-bottom: 1px solid var(--border); }
   h3 { font-size: .97rem; margin: 0 0 .4rem; }
+  .technical-items p + p { margin-top: 1rem; }
   .technical-items p { font-size: .84rem; color: var(--muted); margin: 0; }
+  @media (max-width: 767px) {
+    .technical-grid { margin-top: 1.5rem; }
+    .technical-grid:has(:global(.architecture[data-enhanced])) .technical-items { display: none; }
+  }
   @media (min-width: 48rem) { .technical-grid { grid-template-columns: 1fr 1fr; gap: 3rem; } }
 </style>

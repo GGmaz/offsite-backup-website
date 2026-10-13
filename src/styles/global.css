@@ -6,6 +6,9 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 110px; }
 body { margin: 0; }
+html.mobile-menu-open, html.mobile-menu-open body { overflow: hidden; }
+[hidden] { display: none !important; }
+@media (max-width: 767px) { html { scroll-padding-top: 88px; } }
 a { color: inherit; }
 button, input, textarea, select { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
@@ -35,3 +38,6 @@ p { overflow-wrap: break-word; }
 .skip-link:focus { top: .5rem; }
 @media (min-width: 64rem) { .split-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: none; align-items: center; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+
+.expand-chevron { display: inline-block; width: .5rem; height: .5rem; flex-shrink: 0; margin-inline: .2rem; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform .18s ease; }
+[aria-expanded="true"] > .expand-chevron { transform: rotate(45deg); }

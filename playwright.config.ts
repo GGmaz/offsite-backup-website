@@ -1,16 +1,17 @@
 import { defineConfig, devices } from '@playwright/test';
+const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4321';
 export default defineConfig({
   testDir: './tests',
   testMatch: '**/*.spec.ts',
   fullyParallel: true,
   reporter: [['list']],
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4321',
+    baseURL,
     launchOptions: process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {},
   },
   webServer: {
-    command: 'npm run preview -- --host 127.0.0.1 --ignore-lock',
-    url: `${process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4321'}/offsite-backup-website/`,
+    command: `npm run preview -- --host 127.0.0.1 --port ${new URL(baseURL).port || '4321'} --ignore-lock`,
+    url: `${baseURL}/offsite-backup-website/`,
     reuseExistingServer: !process.env.CI,
   },
   projects: [

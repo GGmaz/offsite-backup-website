@@ -44,6 +44,16 @@ const { hero: h } = Astro.props.content;
   .trust-item strong { font-weight: 750; text-transform: uppercase; font-size: .72rem; }
   .trust-item span { color: var(--muted); margin-top: .2rem; }
   @media (max-width: 63.99rem) { .hero { display: flex; flex-direction: column; } .hero-content { order: -1; padding-bottom: 2.3rem; } .bottom-wave { display: none; } }
+  @media (max-width: 767px) {
+    .hero-image { display: none; }
+    .hero-content { padding-block: 2.4rem 2rem; }
+    .trust-items { grid-template-columns: 1fr; gap: 0; padding-block: .5rem; }
+    .trust-item { gap: 1rem; padding-block: .85rem; border-bottom: 1px solid var(--border); }
+    .trust-item:last-child { border-bottom: 0; }
+    .trust-item p { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem; font-size: .85rem; }
+    .trust-item strong { font-size: .85rem; text-transform: none; }
+    .trust-item span { margin: 0; }
+  }
   @media (min-width: 48rem) { .trust-items { grid-template-columns: repeat(5,minmax(0,1fr)); gap: 0; } .trust-item { padding-inline: 1rem; border-right: 1px solid #d1dfeb; } .trust-item:first-child { padding-left: 0; } .trust-item:last-child { border: 0; padding-right: 0; } }
   @media (min-width: 64rem) {
     .hero-content { min-height: 500px; display: flex; align-items: center; padding-block: 3.3rem 4rem; }

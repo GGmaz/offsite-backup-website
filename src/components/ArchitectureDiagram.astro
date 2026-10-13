@@ -3,17 +3,70 @@ import Icon from './Icon.astro';
 import type { Content } from '../content/types';
 interface Props { content: Content }
 const { technical: t } = Astro.props.content;
+const stepDetails = [
+  [{ title: '', text: t.description }],
+  [t.items[0]],
+  [t.items[1]],
+  [t.items[2], t.items[3]],
+];
 ---
 <figure class="architecture">
-  <ol>{t.diagram.map((label, i) => <li><span class="node"><Icon name={['video', 'lock', 'tunnel', 'server'][i]} size={26} /><span>{label}</span><small>{['01', '02', '03', '04'][i]}</small></span>{i < 3 && <span class="connector" aria-hidden="true">↓</span>}</li>)}</ol>
+  <ol>{t.diagram.map((label, i) => <li>
+    <span class="node" data-diagram-static><Icon name={['video', 'lock', 'tunnel', 'server'][i]} size={26} /><span>{label}</span><small>{String(i + 1).padStart(2, '0')}</small></span>
+    <button hidden class="node" data-architecture-toggle aria-expanded="false" aria-controls={`technical-panel-${i}`}><Icon name={['video', 'lock', 'tunnel', 'server'][i]} size={26} /><span>{label}</span><small aria-hidden="true">{String(i + 1).padStart(2, '0')}</small><span class="expand-chevron" aria-hidden="true"></span></button>
+    <div hidden id={`technical-panel-${i}`} class="step-details">{stepDetails[i].map(item => <>
+      {item.title && <h3>{item.title}</h3>}
+      {item.text.split("\n\n").map(paragraph => <p>{paragraph}</p>)}
+    </>)}</div>
+    {i < 3 && <span class="connector" aria-hidden="true">↓</span>}
+  </li>)}</ol>
   <figcaption>{t.description}</figcaption>
 </figure>
+<script>
+  const diagram = document.querySelector<HTMLElement>('.architecture');
+  const mobile = matchMedia('(max-width: 767px)');
+  if (diagram) {
+    const buttons = [...diagram.querySelectorAll<HTMLButtonElement>('[data-architecture-toggle]')];
+    diagram.dataset.enhanced = '';
+    const sync = () => {
+      diagram.querySelectorAll<HTMLElement>('[data-diagram-static]').forEach(node => node.hidden = mobile.matches);
+      buttons.forEach(button => {
+        button.hidden = !mobile.matches;
+        button.setAttribute('aria-expanded', 'false');
+        document.getElementById(button.getAttribute('aria-controls')!)!.hidden = true;
+      });
+    };
+    buttons.forEach(button => button.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      buttons.forEach(other => {
+        const expanded = other === button && open;
+        other.setAttribute('aria-expanded', String(expanded));
+        document.getElementById(other.getAttribute('aria-controls')!)!.hidden = !expanded;
+      });
+    }));
+    sync();
+    mobile.addEventListener('change', sync);
+  }
+</script>
 <style>
   .architecture { margin: 0; padding: clamp(1.25rem,3vw,2.5rem); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
   ol { list-style: none; padding: 0; margin: 0; }
-  .node { display: flex; gap: 1rem; align-items: center; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; font-size: .85rem; font-weight: 550; }
+  .node { display: flex; width: 100%; min-width: 0; gap: 1rem; align-items: center; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; font-size: .85rem; font-weight: 550; }
   .node svg { color: var(--blue-dark); flex-shrink: 0; }
   .node small { margin-left: auto; font: .65rem ui-monospace,monospace; color: var(--muted); }
   .connector { display: block; text-align: center; font-size: 1.3rem; color: var(--blue-dark); padding-block: .35rem; }
+  button.node { display: flex; width: 100%; text-align: left; color: var(--navy); font-family: inherit; line-height: inherit; }
+  button.node:hover, button.node[aria-expanded="true"] { border-color: var(--blue); background: var(--blue-light); }
+  .step-details { padding: 1.1rem .25rem .5rem; }
+  .step-details h3 { font-size: .9rem; margin: 0 0 .6rem; }
+  .step-details h3:not(:first-child) { margin-top: 1.25rem; }
+  .step-details p { font-size: .84rem; color: var(--muted); margin: 0; }
+  .step-details p + p { margin-top: 1rem; }
+  @media (max-width: 767px) {
+    .architecture { padding: 1.2rem; }
+    .node { gap: .75rem; padding: 1.2rem; font-size: .8rem; }
+    .node > span { min-width: 0; }
+    .node small { flex-shrink: 0; }
+  }
   figcaption { margin-top: 1.5rem; color: var(--muted); font-size: .75rem; line-height: 1.7; }
 </style>

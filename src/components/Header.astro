@@ -19,23 +19,114 @@ const ids = ['about', 'technical', 'pricing', 'faq'];
     </nav>
   </div>
 </header>
+<dialog class="mobile-drawer" aria-label={c.navLabel}>
+  <div class="drawer-top"><span>{c.menu}</span><button class="drawer-close" aria-label={c.close}>{c.close}<span aria-hidden="true">×</span></button></div>
+</dialog>
 <script>
   const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
   const nav = document.querySelector<HTMLElement>('#main-nav');
-  if (toggle && nav) {
+  const header = document.querySelector<HTMLElement>('.header');
+  const home = document.querySelector('.header-inner');
+  const drawer = document.querySelector<HTMLDialogElement>('.mobile-drawer');
+  const closeButton = document.querySelector<HTMLButtonElement>('.drawer-close');
+  const mobile = matchMedia('(max-width: 767px)');
+  if (toggle && nav && header && home && drawer && closeButton) {
     toggle.hidden = false;
     nav.classList.add('enhanced');
-    const setOpen = (open: boolean) => {
+    const setExpanded = (open: boolean) => {
       toggle.setAttribute('aria-expanded', String(open));
       toggle.firstChild!.textContent = open ? toggle.dataset.close! : toggle.dataset.open!;
-      nav.classList.toggle('is-open', open);
     };
-    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
-    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setOpen(false)));
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setOpen(false); toggle.focus(); }
+    const closeDrawer = () => {
+      if (drawer.open) drawer.close();
+    };
+    drawer.addEventListener('close', () => {
+      document.documentElement.classList.remove('mobile-menu-open');
+      setExpanded(false);
+      header.classList.remove('header-hidden');
     });
-    matchMedia('(min-width: 75rem)').addEventListener('change', () => setOpen(false));
+    toggle.addEventListener('click', () => {
+      if (mobile.matches) {
+        header.classList.remove('header-hidden');
+        drawer.showModal();
+        document.documentElement.classList.add('mobile-menu-open');
+        setExpanded(true);
+      } else {
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        nav.classList.toggle('is-open', open);
+        setExpanded(open);
+      }
+    });
+    closeButton.addEventListener('click', closeDrawer);
+    drawer.addEventListener('keydown', event => {
+      if (event.key !== 'Tab') return;
+      const controls = [...drawer.querySelectorAll<HTMLElement>('button, a[href]')];
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    });
+    drawer.addEventListener('click', event => {
+      const rect = drawer.getBoundingClientRect();
+      if (event.target === drawer && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) closeDrawer();
+    });
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      closeDrawer();
+      nav.classList.remove('is-open');
+      setExpanded(false);
+    }));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !drawer.open && toggle.getAttribute('aria-expanded') === 'true') {
+        nav.classList.remove('is-open');
+        setExpanded(false);
+        toggle.focus();
+      }
+    });
+    let previousY = window.scrollY;
+    let direction = 0;
+    let distance = 0;
+    const syncLayout = () => {
+      closeDrawer();
+      (mobile.matches ? drawer : home).append(nav);
+      toggle.setAttribute('aria-controls', mobile.matches ? 'mobile-menu' : 'main-nav');
+      if (mobile.matches) toggle.setAttribute('aria-haspopup', 'dialog');
+      else toggle.removeAttribute('aria-haspopup');
+      nav.classList.remove('is-open');
+      setExpanded(false);
+      header.classList.remove('header-hidden');
+      previousY = window.scrollY;
+      distance = 0;
+      direction = 0;
+    };
+    drawer.id = 'mobile-menu';
+    syncLayout();
+    mobile.addEventListener('change', syncLayout);
+    matchMedia('(min-width: 75rem)').addEventListener('change', () => {
+      nav.classList.remove('is-open');
+      setExpanded(false);
+    });
+    window.addEventListener('scroll', () => {
+      const y = Math.max(0, window.scrollY);
+      const delta = y - previousY;
+      previousY = y;
+      if (!mobile.matches || drawer.open) return;
+      if (y <= 16) {
+        header.classList.remove('header-hidden');
+        distance = 0;
+        direction = 0;
+        return;
+      }
+      const nextDirection = Math.sign(delta);
+      if (!nextDirection) return;
+      distance = nextDirection === direction ? distance + Math.abs(delta) : Math.abs(delta);
+      direction = nextDirection;
+      if (distance >= 12) header.classList.toggle('header-hidden', direction > 0);
+    }, { passive: true });
   }
 </script>
 <style>
@@ -56,6 +147,28 @@ const ids = ['about', 'technical', 'pricing', 'faq'];
   .menu-toggle { align-items: center; gap: .65rem; background: var(--white); border: 1px solid var(--border); border-radius: .4rem; padding: .7rem; color: var(--navy); font: inherit; font-size: .85rem; min-height: 44px; }
   .menu-toggle:not([hidden]) { display: inline-flex; }
   nav.enhanced { display: none; }
+  .mobile-drawer { border: 0; padding: 1.25rem; color: var(--navy); background: var(--white); width: min(360px, calc(100% - 2rem)); max-width: none; height: 100dvh; max-height: none; margin: 0 0 0 auto; box-shadow: -12px 0 40px #072b6220; }
+  .mobile-drawer::backdrop { background: #061b3c80; }
+  .mobile-drawer[open] { animation: drawer-enter .22s ease-out; }
+  .drawer-top { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); font-weight: 700; }
+  .drawer-close { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; border: 0; background: transparent; color: var(--navy); font-size: .8rem; }
+  .drawer-close span { font-size: 1.75rem; }
+  .mobile-drawer nav.enhanced { display: block; }
+  .mobile-drawer .nav-links { flex-direction: column; align-items: stretch; gap: 0; margin-block: 1rem; }
+  .mobile-drawer .nav-links a { font-size: .9rem; text-transform: none; padding: 1rem .25rem; border-bottom: 1px solid var(--border); }
+  .mobile-drawer .header-actions { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .mobile-drawer .languages { gap: .75rem; }
+  @keyframes drawer-enter { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  @media (prefers-reduced-motion: reduce) { .mobile-drawer[open] { animation: none; } }
+  @media (max-width: 767px) {
+    .header { transition: transform .2s ease; }
+    .header-hidden { transform: translateY(-100%); }
+    .header-inner { min-height: 76px; padding-block: .65rem; gap: .5rem; }
+    .brand-logo { width: 46px; }
+    .brand-lockup { gap: .45rem; }
+    .menu-toggle { padding: .5rem .65rem; }
+    .header:has(.menu-toggle[hidden]) { position: relative; }
+  }
   @media (max-width: 24rem) { .brand-logo { width: 48px; } .header-inner { gap: .5rem; } .wordmark { gap: .45rem; } }
   nav.enhanced.is-open { display: block; }
   @media (min-width: 75rem) {

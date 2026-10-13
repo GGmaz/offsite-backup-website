@@ -78,18 +78,18 @@ export const sr: Content = {
     diagram: [
       "Podaci klijenta za backup",
       "Šifrovanje na računaru klijenta",
-      "WireGuard tunel",
+      "VPN tunel",
       "Udaljeno šifrovano skladište",
     ],
     description:
-      "Podaci klijenta šifruju se na računaru klijenta, prolaze kroz WireGuard VPN tunel i stižu u udaljeno šifrovano skladište.",
+      "Podaci klijenta šifruju se na računaru klijenta, prolaze kroz VPN tunel i stižu u udaljeno šifrovano skladište.",
     items: [
       {
         title: "Višeslojna zaštita Vaših rezervnih kopija",
         text: "Podaci se šifruju pre prenosa, a rezervne kopije su zaštićene mehanizmima za kontrolu pristupa i integriteta podataka.\n\nKorisnički pristup je ograničen tako da klijent može da šalje nove rezervne kopije, ali ne može da briše ili menja već sačuvane kopije na našem serveru. Time se smanjuje rizik da virus ili ransomware, koji kompromituje računar ili uređaj kod klijenta, ugrozi i ranije sačuvane rezervne kopije.\n\nČak i ako su izvorni podaci oštećeni ili šifrovani ransomware napadom, ranije sačuvane rezervne kopije mogu ostati dostupne za oporavak.",
       },
       {
-        title: "Namenski WireGuard prenos",
+        title: "Prenos kroz VPN tunel",
         text: "VPN tunel povezuje lokaciju korisnika sa udaljenim serverom za šifrovani prenos.",
       },
       {

@@ -78,18 +78,18 @@ export const en: Content = {
     diagram: [
       "Client data for backup",
       "Encryption on the client’s computer",
-      "WireGuard tunnel",
+      "VPN tunnel",
       "Remote encrypted storage",
     ],
     description:
-      "Client data is encrypted on the client’s computer, passes through a WireGuard VPN tunnel, and reaches remote encrypted storage.",
+      "Client data is encrypted on the client’s computer, passes through a VPN tunnel, and reaches remote encrypted storage.",
     items: [
       {
         title: "Multiple layers of protection for your backups",
         text: "Data is encrypted before transfer, and backups are protected by access control and data integrity mechanisms.\n\nClient access is restricted so that clients can upload new backups but cannot delete or modify copies already stored on our server. This reduces the risk of a virus or ransomware compromising a client’s computer or device and affecting previously stored backups.\n\nEven if the original data is damaged or encrypted by ransomware, previously stored backups may remain available for recovery.",
       },
       {
-        title: "Dedicated WireGuard transfer",
+        title: "Transfer through a VPN tunnel",
         text: "A VPN tunnel connects the customer location and remote server for encrypted transfers.",
       },
       {

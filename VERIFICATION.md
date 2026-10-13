@@ -30,3 +30,7 @@ The 10 Playwright smoke/accessibility tests passed against a plain static HTTP s
 The white/navy/blue reference redesign passed Astro checks (zero errors/warnings/hints), the production build and all 10 browser/accessibility smoke tests against the local development server at port 4322. Desktop and 320px phone screenshots were visually reviewed. The static export test passed, and all 13 generated root files match the final `dist/` output. Lighthouse was not rerun for this visual redesign. No staging, commit or push was performed.
 
 Generated image assets and their prompts are documented in `DESIGN-NOTES.md`.
+
+## Single-design cleanup — 2026-10-13
+
+Removed the classic hero, classic theme stylesheet, design-switch component, alternate branding and switch-only translation fields. Both language routes render the blue/white design directly. All 10 remaining browser/accessibility smoke tests passed against the local app, including navigation without JavaScript and inactive inquiry behavior. Astro checks and the production build passed. Generated root files were refreshed locally; no staging, commit or push was performed.

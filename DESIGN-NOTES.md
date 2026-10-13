@@ -2,6 +2,8 @@
 
 The 2026-10-04 redesign follows the supplied LAN-ICT reference's white/light-blue background, navy headings, rounded blue buttons, metallic circular mark, curved hero accents, feature strip and photographic cards. Existing business identity, bilingual package content and inactive inquiry behavior are preserved. The page uses HTML/CSS rather than a flattened reference screenshot.
 
+As of 2026-10-13, this is the only active design. The original navy/green design, its alternate hero, and the design-switch button have been removed. Both language routes render the blue/white design directly, including without JavaScript.
+
 ## Generated assets
 
 Generated with the built-in image-generation tool and optimized to WebP with Sharp. Both assets are stored in the project and served locally:

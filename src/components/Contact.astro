@@ -31,7 +31,6 @@ const details = [site.business.address, site.business.phone, site.business.email
   inquiry?.addEventListener('keydown', event => {
     if (event instanceof KeyboardEvent && event.key === 'Enter' && event.target instanceof HTMLInputElement) event.preventDefault();
   });
-  // Delegation also handles CTAs in the hero after switching designs.
   document.addEventListener('click', event => {
     const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[data-package]') : null;
     const select = document.querySelector<HTMLSelectElement>('#package');

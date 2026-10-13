@@ -1,6 +1,5 @@
 ---
 import Icon from './Icon.astro';
-import DesignSwitcher from './DesignSwitcher.astro';
 import { site, localePath, type Locale } from '../config/site';
 import type { Content } from '../content/types';
 interface Props { content: Content; locale: Locale }
@@ -9,11 +8,11 @@ const ids = ['about', 'technical', 'pricing', 'faq'];
 ---
 <header class="header">
   <div class="container header-inner">
-    <a class="wordmark" href={localePath(locale)} aria-label={site.name}><span class="classic-brand"><Icon name="shield" size={25} /><span>Offsite<span class="wordmark-light"> Backup</span></span></span><span class="blue-brand"><span class="brand-icon"><Icon name="lock" size={32} /></span><span class="brand-type"><span>OFFSITE BACKUP</span><small>VIDEO BACKUP SOLUTION</small></span></span></a>
+    <a class="wordmark" href={localePath(locale)} aria-label={site.name}><span class="brand-lockup"><span class="brand-icon"><Icon name="lock" size={32} /></span><span class="brand-type"><span>OFFSITE BACKUP</span><small>VIDEO BACKUP SOLUTION</small></span></span></a>
     <button class="menu-toggle" hidden aria-expanded="false" aria-controls="main-nav" data-open={c.menu} data-close={c.close}>{c.menu}<span aria-hidden="true">☰</span></button>
     <nav id="main-nav" aria-label={c.navLabel}>
       <div class="nav-links">{ids.map((id, i) => <a href={`#${id}`}>{c.nav[i]}</a>)}</div>
-      <div class="header-actions"><DesignSwitcher content={c} />
+      <div class="header-actions">
         <div class="languages"><a href={localePath('sr')} lang="sr-Latn" aria-label="Srpski" aria-current={locale === 'sr' ? 'page' : undefined}>SR</a><span aria-hidden="true">/</span><a href={localePath('en')} lang="en" aria-label="English" aria-current={locale === 'en' ? 'page' : undefined}>EN</a></div>
         <a class="button button-small" href="#contact">{c.quote}<Icon name="arrow" size={17} /></a>
       </div>
@@ -43,6 +42,7 @@ const ids = ['about', 'technical', 'pricing', 'faq'];
   .header { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
   .header-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; min-height: 100px; gap: 1rem; padding-block: 1rem; }
   .wordmark { display: inline-flex; align-items: center; gap: .8rem; color: var(--navy); font-size: clamp(1rem,2vw,1.7rem); font-weight: 750; text-decoration: none; white-space: nowrap; letter-spacing: -.04em; }
+  .brand-lockup { display: inline-flex; align-items: center; gap: .6rem; }
   .brand-type { display: flex; flex-direction: column; line-height: 1.15; letter-spacing: -.02em; }
   .brand-type small { font-size: .55em; font-weight: 500; margin-top: .25rem; letter-spacing: .03em; }
   .brand-icon { color: #114178; display: grid; place-items: center; width: 57px; height: 57px; border: 2px solid #93bad7; border-radius: 50%; background: linear-gradient(130deg,#fff 5%,#cedeea 30%,#fff 48%,#89adca 85%); box-shadow: inset 0 0 0 4px #f8fbff, inset 0 0 0 6px #174b80, 0 3px 8px #072b6219; flex-shrink: 0; }

@@ -2,7 +2,7 @@ import type { Content } from "./types";
 export const sr: Content = {
   title: "LAN-ICT | Offsite Data Backup",
   description:
-    "Šifrovani backup svih vaših podataka na udaljenoj lokaciji. Uporedite Basic, Standard i Premium pakete, prostor, čuvanje i oporavak.",
+    "Šifrovani backup poslovnih podataka na udaljenoj lokaciji. Uporedite pakete, period čuvanja i mogućnosti oporavka.",
   skip: "Pređi na sadržaj",
   navLabel: "Glavna navigacija",
   menu: "Meni",
@@ -12,6 +12,8 @@ export const sr: Content = {
   hero: {
     displayTitle: "DATA BACKUP",
     how: "Pogledajte kako funkcioniše",
+    mobileHow: "Kako funkcioniše",
+    mobilePricing: "Paketi i cene",
     features: [
       { title: "Sigurnost", text: "podataka" },
       { title: "Offsite", text: "backup" },
@@ -32,49 +34,49 @@ export const sr: Content = {
   about: {
     eyebrow: "PRILAGOĐENO VAŠEM POSLOVANJU",
     title: "Druga kopija. Pouzdaniji plan oporavka.",
-    text: "Mi ne prodajemo diskove – pružamo Backup uslugu kojom profesionalno upravljamo, sa ciljem da Vaši podaci budu bezbedno sačuvani i dostupni onda kada su Vam najpotrebniji. Podaci se automatski prenose na naš server na udaljenoj lokaciji, nezavisno od Vaše opreme i prostora u kojima se izvorno nalaze, enkriptovani i zaštićeni od neovlašćenog pristupa. Sistem je osmišljen da smanji rizik od gubitka podataka usled kvara opreme, požara, krađe ili napada virusa, uz garantovano čuvanje podataka u skladu sa ugovorenim periodom.\n\nNe morate da brinete o opremi, održavanju i svakodnevnom radu sistema – mi brinemo o Vašim rezervnim kopijama, a Vi možete da se posvetite svom poslu.",
+    text: "Udaljena kopija pomaže u oporavku podataka kada vaša oprema ili primarna lokacija nisu dostupne. Mi upravljamo backup sistemom i održavamo opremu. Uslugu prilagođavamo vašim podacima i potrebnom periodu čuvanja. Sistem je osmišljen da smanji rizik od gubitka podataka usled kvara opreme, požara, krađe ili napada virusa, uz garantovano čuvanje podataka u skladu sa ugovorenim periodom.",
     steps: [
       {
         title: "Podešavanje",
-        text: "Backup sistem prilagođavamo Vašim potrebama – količini podataka, brzini internet veze i željenom periodu čuvanja.",
+        text: "Određujemo podatke za backup, raspored prenosa i period čuvanja.",
       },
       {
         title: "Šifrovanje i prenos",
-        text: "Podaci se automatski šifruju na Vašem računaru pre slanja, a zatim putem Interneta prenose samo novi i izmenjeni podaci. Prenos se odvija kroz dodatno zaštićen VPN tunel, čime se obezbeđuje višeslojna zaštita Vaših podataka tokom prenosa.",
+        text: "Podaci se automatski šifruju na Vašem računaru pre slanja, a zatim putem Interneta prenose samo novi i izmenjeni podaci.",
       },
       {
         title: "Čuvanje i oporavak",
-        text: "Dostupne kopije čuvaju se u okviru limita paketa. Kada zatrebaju, podaci se vraćaju uz vaš ključ za šifrovanje.",
+        text: "Kopije čuvamo prema izabranom paketu i pomažemo pri oporavku podataka.",
       },
     ],
   },
   benefits: {
     eyebrow: "MANJI RIZIK. VIŠE KONTROLE.",
-    title: "Udaljeni backup kao deo svakodnevnog rada.",
+    title: "Dodatni sloj zaštite podataka.",
     text: "Praktičan sloj zaštite za podatke od kojih zavisi vaše poslovanje.",
     cards: [
       {
         title: "Čuvanje prema vašim potrebama",
-        text: "Period čuvanja podataka definišemo u dogovoru sa Vama, u skladu sa Vašim poslovnim potrebama i važećim zakonskim obavezama.",
+        text: "Period čuvanja biramo prema vašim poslovnim potrebama i uslovima paketa.",
       },
       {
         title: "Privatnost počinje kod vas",
-        text: "Podaci se šifruju na klijentu pre slanja. Za oporavak je potreban vaš ključ za šifrovanje; način čuvanja ključa i postupak oporavka dogovaraju se pre početka usluge.",
+        text: "Podaci se šifruju pre slanja. Način čuvanja ključa i postupak oporavka dogovaramo pre početka usluge.",
       },
       {
         title: "Prenos po vašem rasporedu",
-        text: "Inkrementalni backup prenosi samo nove i izmenjene podatke u odnosu na prethodnu kopiju, čime se smanjuje količina prenetih podataka i vreme potrebno za backup. Raspored prenosa i ograničenje brzine prilagođavamo Vašim potrebama kako bi se uticaj na redovan rad Vaše kompanije sveo na minimum.",
+        text: "Raspored i brzinu prenosa prilagođavamo vašem radu. Prenose se samo novi i izmenjeni podaci.",
       },
       {
-        title: "Dodatna sigurnost kada je najpotrebnije",
-        text: "Udaljene rezervne kopije, koje čuvamo na našim serverima, omogućavaju oporavak podataka u slučaju kvara diska ili DVR uređaja, oštećenja opreme ili krađe. Mogućnost uspešnog oporavka zavisi od ispravnosti sačuvanih kopija, dostupnosti potrebnih podataka i ključa za dešifrovanje.\n\nRadi dodatne sigurnosti, preporučujemo da, pored naše udaljene kopije, čuvate još jednu nezavisnu kopiju podataka na sopstvenom mediju. Na taj način smanjujete rizik od gubitka podataka i dodatno povećavate pouzdanost svog sistema zaštite.",
+        title: "Kopija van vaše lokacije",
+        text: "Udaljena kopija pomaže pri kvaru, oštećenju opreme ili krađi. Oporavak zavisi od ispravnosti kopije i dostupnosti ključa. Zadržite i nezavisnu lokalnu kopiju kao deo plana oporavka.",
       },
     ],
   },
   technical: {
     eyebrow: "OD PODATAKA DO REZERVNE KOPIJE",
     title: "Šifrovano lokalno. Sačuvano udaljeno.",
-    text: "Jasno definisana arhitektura i višeslojna zaštita u svakom prenosu podataka.",
+    text: "Od lokalnog šifrovanja do udaljene kopije.",
     diagram: [
       "Podaci klijenta za backup",
       "Šifrovanje na računaru klijenta",
@@ -82,30 +84,30 @@ export const sr: Content = {
       "Udaljeno šifrovano skladište",
     ],
     description:
-      "Podaci klijenta šifruju se na računaru klijenta, prolaze kroz VPN tunel i stižu u udaljeno šifrovano skladište.",
+      "Podaci se šifruju kod klijenta i prenose kroz VPN do udaljenog skladišta.",
     items: [
       {
-        title: "Višeslojna zaštita Vaših rezervnih kopija",
-        text: "Podaci se šifruju pre prenosa, a rezervne kopije su zaštićene mehanizmima za kontrolu pristupa i integriteta podataka.\n\nKorisnički pristup je ograničen tako da klijent može da šalje nove rezervne kopije, ali ne može da briše ili menja već sačuvane kopije na našem serveru. Time se smanjuje rizik da virus ili ransomware, koji kompromituje računar ili uređaj kod klijenta, ugrozi i ranije sačuvane rezervne kopije.\n\nČak i ako su izvorni podaci oštećeni ili šifrovani ransomware napadom, ranije sačuvane rezervne kopije mogu ostati dostupne za oporavak.",
+        title: "Zaštita sačuvanih kopija",
+        text: "Klijent može da šalje nove kopije, ali ne i da briše ili menja sačuvane. Ograničen pristup smanjuje rizik da ransomware na klijentskom uređaju ugrozi ranije kopije.",
       },
       {
         title: "Prenos kroz VPN tunel",
-        text: "VPN tunel povezuje lokaciju korisnika sa udaljenim serverom za šifrovani prenos.",
+        text: "VPN povezuje vašu lokaciju sa udaljenim serverom i dodatno štiti prenos.",
       },
       {
         title: "Automatsko čuvanje",
-        text: "Dostupne kopije rotiraju se prema dogovorenoj politici, a podaci kojima je istekao period čuvanja brišu se radi oslobađanja prostora. Politika čuvanja ne može nadoknaditi propušten backup.",
+        text: "Kopije se čuvaju prema dogovorenoj politici. Po isteku perioda čuvanja, podaci se brišu radi oslobađanja prostora.",
       },
       {
         title: "Samostalni pristup uz Premium",
-        text: "Premium paket Vam daje mogućnost da sami pregledate i preuzimate podatke kroz grafički interfejs.",
+        text: "Premium omogućava pregled i preuzimanje podataka kroz grafički interfejs.",
       },
     ],
   },
   pricing: {
     eyebrow: "JASNI LIMITI PAKETA",
     title: "Izaberite prostor i period čuvanja.",
-    text: "Tri paketa. Jasni limiti. Pomažemo vam da ih uskladite sa količinom podataka.",
+    text: "Pomažemo vam da izaberete paket prema količini podataka i periodu čuvanja.",
     recommended: "Preporučeno",
     month: "/ mesečno",
     upTo: "Do",
@@ -156,11 +158,11 @@ export const sr: Content = {
   contact: {
     eyebrow: "ISPLANIRAJMO VAŠ BACKUP",
     title: "Počnimo od vaših potreba.",
-    text: "Opišite količinu podataka i potreban period čuvanja da biste izabrali odgovarajući paket.",
+    text: "Navedite količinu podataka i period čuvanja. Predložićemo odgovarajući paket.",
     details: ["Adresa", "Telefon podrške", "Email", "Radno vreme"],
     pending: "Biće potvrđeno pre pokretanja",
     notice:
-      "Online upiti još nisu dostupni. Kontaktirajte nas putem emaila ili telefona. Kontakt podaci biće dodati pre pokretanja.",
+      "Slanje upita još nije dostupno. Kontakt podaci biće dodati pre pokretanja.",
     required:
       "Polja označena sa * biće obavezna kada slanje upita bude dostupno.",
     name: "Ime i prezime",

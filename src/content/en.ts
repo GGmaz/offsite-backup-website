@@ -2,7 +2,7 @@ import type { Content } from "./types";
 export const en: Content = {
   title: "LAN-ICT | Offsite Data Backup",
   description:
-    "Encrypted offsite backup for all your data. Compare Basic, Standard and Premium storage, retention and recovery options.",
+    "Encrypted offsite backup for business data. Compare packages, retention periods and recovery options.",
   skip: "Skip to content",
   navLabel: "Main navigation",
   menu: "Menu",
@@ -12,6 +12,8 @@ export const en: Content = {
   hero: {
     displayTitle: "DATA BACKUP",
     how: "See how it works",
+    mobileHow: "How it works",
+    mobilePricing: "Packages & pricing",
     features: [
       { title: "Data", text: "security" },
       { title: "Offsite", text: "backup" },
@@ -26,55 +28,55 @@ export const en: Content = {
     ],
     eyebrow: "SECURITY FOR YOUR DATA",
     title: "Secure offsite backup for all your data.",
-    text: "Automatic, encrypted backup of your data at a remote location. We look after your backups, equipment and maintenance so you can focus on your business.",
+    text: "Automatic, encrypted storage of an additional copy of your business data at a remote location.",
     pricing: "View packages & pricing",
   },
   about: {
     eyebrow: "BUILT AROUND YOUR WORK",
     title: "A second copy. A stronger recovery plan.",
-    text: "We do not sell disks – we provide a professionally managed backup service designed to keep your data safe and available when you need it most. Data is automatically transferred to our server at a remote location, independent of your equipment and the premises where the original data is held, encrypted and protected against unauthorized access. The system is designed to reduce the risk of data loss due to equipment failure, fire, theft or viruses, with guaranteed retention for the agreed period.\n\nYou do not need to worry about equipment, maintenance or the daily operation of the system – we look after your backups so you can focus on your business.",
+    text: "A remote copy helps you recover data when your equipment or primary location is unavailable. We manage the backup system and maintain the equipment, tailoring the service to your data and retention needs.",
     steps: [
       {
         title: "Configure",
-        text: "We tailor the backup system to your needs – data volume, internet connection speed and desired retention period.",
+        text: "We define the data to back up, transfer schedule and retention period.",
       },
       {
         title: "Encrypt & transfer",
-        text: "Data is automatically encrypted on your computer before upload, and only new and changed data is then transferred over the internet. Transfers pass through an additional protected VPN tunnel, providing multiple layers of security for your data in transit.",
+        text: "After the initial backup, only new and changed data is transferred automatically.",
       },
       {
         title: "Retain & recover",
-        text: "Keep available backups within your package limits and recover data when needed, using your encryption key.",
+        text: "We retain copies according to your package and help you recover data.",
       },
     ],
   },
   benefits: {
     eyebrow: "LESS EXPOSURE. MORE CONTROL.",
-    title: "Make remote backup part of your everyday routine.",
+    title: "An extra layer of data protection.",
     text: "A practical layer of protection for the data your business depends on.",
     cards: [
       {
         title: "Retention that fits your needs",
-        text: "We agree on a data retention period with you, according to your business needs and applicable legal obligations.",
+        text: "We agree on retention according to your business needs and package terms.",
       },
       {
         title: "Privacy starts at your premises",
-        text: "Data is encrypted on the client before upload. Recovery requires your encryption key; key custody and the operational recovery model must be agreed before service starts.",
+        text: "Data is encrypted before upload. We agree on key custody and recovery procedures before the service starts.",
       },
       {
         title: "Transfers on your schedule",
-        text: "Incremental backups transfer only new and changed data since the previous backup, reducing the amount of data transferred and the time needed for backup. We tailor the transfer schedule and bandwidth limit to your needs to minimize the impact on your company’s regular operations.",
+        text: "We adjust transfer schedules and bandwidth to fit your work. Only new and changed data is transferred.",
       },
       {
-        title: "Extra security when you need it most",
-        text: "Remote backups stored on our servers enable data recovery in the event of disk or DVR failure, equipment damage or theft. Successful recovery depends on the integrity of the stored copies, the availability of the required data and the decryption key.\n\nFor extra security, we recommend keeping another independent copy of your data on your own storage medium, alongside our remote copy. This reduces the risk of data loss and further improves the reliability of your protection system.",
+        title: "A copy beyond your premises",
+        text: "A remote copy helps with equipment failure, damage or theft. Recovery depends on a valid backup and an available decryption key. Keep an independent local copy as part of your recovery plan.",
       },
     ],
   },
   technical: {
     eyebrow: "THE PATH FROM DATA TO BACKUP",
     title: "Encrypted locally. Stored remotely.",
-    text: "A clearly defined architecture with multiple layers of protection for every data transfer.",
+    text: "From local encryption to a remote copy.",
     diagram: [
       "Client data for backup",
       "Encryption on the client’s computer",
@@ -82,30 +84,30 @@ export const en: Content = {
       "Remote encrypted storage",
     ],
     description:
-      "Client data is encrypted on the client’s computer, passes through a VPN tunnel, and reaches remote encrypted storage.",
+      "Data is encrypted on the client’s computer and transferred through a VPN to remote storage.",
     items: [
       {
-        title: "Multiple layers of protection for your backups",
-        text: "Data is encrypted before transfer, and backups are protected by access control and data integrity mechanisms.\n\nClient access is restricted so that clients can upload new backups but cannot delete or modify copies already stored on our server. This reduces the risk of a virus or ransomware compromising a client’s computer or device and affecting previously stored backups.\n\nEven if the original data is damaged or encrypted by ransomware, previously stored backups may remain available for recovery.",
+        title: "Protecting stored backups",
+        text: "Clients can upload new copies but cannot delete or modify stored backups. Restricted access reduces the risk of ransomware on a client device affecting earlier copies.",
       },
       {
         title: "Transfer through a VPN tunnel",
-        text: "A VPN tunnel connects the customer location and remote server for encrypted transfers.",
+        text: "A VPN connects your premises to the remote server, adding protection during transfer.",
       },
       {
         title: "Automatic retention",
-        text: "Available backups rotate according to the agreed policy, and expired data is removed to reclaim storage. Retention cannot recover missed backups.",
+        text: "Copies follow the agreed retention policy. Expired data is deleted to free up storage.",
       },
       {
         title: "Premium self-service access",
-        text: "The Premium package lets you browse and download data yourself through a graphical interface.",
+        text: "Premium lets you browse and download data through a graphical interface.",
       },
     ],
   },
   pricing: {
     eyebrow: "TRANSPARENT PACKAGE LIMITS",
     title: "Choose the space and retention you need.",
-    text: "Three packages. Clear limits. We can help match them to your data volume.",
+    text: "We help you choose a package for your data volume and retention needs.",
     recommended: "Recommended",
     month: "/ month",
     upTo: "Up to",
@@ -156,11 +158,11 @@ export const en: Content = {
   contact: {
     eyebrow: "LET’S PLAN YOUR BACKUP",
     title: "Start with your needs.",
-    text: "Tell us about your data volume and retention needs to find the right package.",
+    text: "Tell us your data volume and retention needs. We will suggest a suitable package.",
     details: ["Address", "Support phone", "Email", "Working hours"],
     pending: "To be confirmed before launch",
     notice:
-      "Online inquiries are not available yet. Please contact us by email or phone. Contact details will be added before launch.",
+      "Online inquiries are not available yet. Contact details will be added before launch.",
     required: "Fields marked * are required when inquiries become available.",
     name: "Full name",
     company: "Company",

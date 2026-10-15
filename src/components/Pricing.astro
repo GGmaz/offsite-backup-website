@@ -26,17 +26,22 @@ const { pricing: p } = Astro.props.content;
   import '../scripts/mobile-accordions';
 </script>
 <style>
+  #pricing { background: radial-gradient(ellipse at 85% 0%, #145ba1 0%, transparent 55%), linear-gradient(135deg, #061e43, #0a376b); border: 0; padding-block: clamp(4rem, 8vw, 7rem); }
+  #pricing .section-intro { max-width: 740px; }
+  #pricing .eyebrow { color: #a8d5ff; }
+  #pricing h2 { color: var(--white); font-size: clamp(2rem, 3.8vw, 3.25rem); }
+  #pricing .section-text { color: #d0e1f3; }
   .mobile-package-heading { margin: 0; }
   .pricing-grid { display: grid; gap: 1.4rem; margin-top: 3rem; }
-  .price-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
-  .price-card.recommended { border: 2px solid var(--blue-dark); box-shadow: 0 8px 28px #0a192f08; }
+  .price-card { background: var(--white); border: 1px solid #c9ddf2; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 16px 36px #020e2526; }
+  .price-card.recommended { border: 2px solid #75bcff; box-shadow: 0 20px 48px #020e254d, 0 0 0 4px #8acaff1a; }
   .recommendation { display: flex; align-items: center; justify-content: center; gap: .4rem; padding: .55rem; min-height: 35px; font-size: .7rem; font-weight: 650; }
   .recommended .recommendation { background: linear-gradient(110deg,#006fc8,#062f72); color: white; }
   .price-content { padding: 1.65rem; display: flex; flex-direction: column; flex: 1; }
   h3 { font-size: 1.25rem; margin: 0; }
   .package-description { font-size: .8rem; color: var(--muted); margin-block: .6rem 0; min-height: 2.8em; }
   .price { display: flex; align-items: baseline; gap: .5rem; margin-block: 1.4rem 1.5rem; }
-  .price strong { font-size: 2.75rem; letter-spacing: -.05em; font-weight: 650; line-height: 1; }
+  .price strong { font-size: 3.25rem; letter-spacing: -.05em; font-weight: 750; line-height: 1; }
   .price span { color: var(--muted); font-size: .8rem; }
   dl { padding: 0; margin: 0 0 1.8rem; flex: 1; }
   dl > div { padding-block: .8rem; border-top: 1px solid var(--border); }
@@ -44,14 +49,17 @@ const { pricing: p } = Astro.props.content;
   dd { margin: 0; font-size: .86rem; line-height: 1.55; }
   .price-content .button { width: 100%; justify-content: space-between; }
   @media (max-width: 767px) {
-    .pricing-grid { gap: .75rem; margin-top: 1.5rem; }
+    .pricing-grid { gap: 1rem; margin-top: 2rem; }
     .price-card.recommended { border-width: 1px; }
-    .mobile-package-heading button:not([hidden]) { display: flex; align-items: center; gap: .75rem; width: 100%; min-height: 80px; padding: 1rem; border: 0; background: transparent; color: var(--navy); text-align: left; }
+    .mobile-package-heading button:not([hidden]) { display: flex; align-items: center; gap: .75rem; width: 100%; min-height: 96px; padding: 1.1rem; border: 0; background: transparent; color: var(--navy); text-align: left; }
     .mobile-package-heading button[aria-expanded="true"] { background: var(--blue-light); }
-    .mobile-package-name { font-size: 1rem; font-weight: 700; }
+    .mobile-package-name { font-size: 1.1rem; font-weight: 750; }
     .mobile-package-name small { display: block; color: var(--blue-dark); font-size: .65rem; margin-top: .2rem; }
-    .mobile-package-price { margin-left: auto; font-size: 1.25rem; font-weight: 700; white-space: nowrap; text-align: right; }
+    .mobile-package-price { margin-left: auto; font-size: 1.65rem; font-weight: 750; white-space: nowrap; text-align: right; letter-spacing: -.04em; }
     .mobile-package-price small { display: block; color: var(--muted); font-size: .65rem; font-weight: 400; }
+    .recommended .mobile-package-heading button:not([hidden]) { background: linear-gradient(110deg, #0066bc, #083d83); color: var(--white); }
+    .recommended .mobile-package-name small { display: table; padding: .2rem .5rem; border-radius: 999px; background: #ffffff; color: #074681; font-weight: 700; margin-top: .4rem; }
+    .recommended .mobile-package-price small { color: #e0efff; }
     .price-card:has([data-accordion-toggle]:not([hidden])) .recommendation { display: none; }
     .price-card:has([data-accordion-toggle]:not([hidden])) .price-content > h3,
     .price-card:has([data-accordion-toggle]:not([hidden])) .price { display: none; }

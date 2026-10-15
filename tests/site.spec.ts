@@ -1,6 +1,23 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 const base = '/offsite-backup-website/';
+test('original copy stays on old routes when switching languages', async ({ page }) => {
+  await page.goto(base + 'old/');
+  await expect(page.locator('#about .about-description')).toContainText('Mi ne prodajemo diskove');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+  await expect(page.locator('.wordmark')).toHaveAttribute('href', base + 'old/');
+  const menu = page.locator('.menu-toggle');
+  if (await menu.isVisible()) await menu.click();
+  await page.locator('.languages a[lang="en"]').click();
+  await expect(page).toHaveURL(base + 'old/en/');
+  await expect(page.locator('#about .about-description')).toContainText('We do not sell disks');
+  await page.locator('.footer-links a[lang="sr-Latn"]').click();
+  await expect(page).toHaveURL(base + 'old/');
+  await page.goto(base);
+  await expect(page.locator('#about .about-description')).toContainText('Udaljena kopija pomaže');
+  await expect(page.locator('#about .about-description')).not.toContainText('Mi ne prodajemo diskove');
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+});
 for (const locale of ['', 'en/']) {
   test(`${locale || 'sr'} locale, pricing selection and inactive inquiry`, async ({ page }) => {
     await page.goto(base + locale);
@@ -58,6 +75,20 @@ test('language links, mobile navigation and responsive widths', async ({ page })
     for (const width of [320, 375, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      const heroButtons = page.locator('.hero-buttons');
+      if (width < 768) {
+        for (const label of await heroButtons.locator('.desktop-label').all()) await expect(label).toBeHidden();
+        for (const label of await heroButtons.locator('.mobile-label').all()) await expect(label).toBeVisible();
+        const primary = await heroButtons.locator('.button').boundingBox();
+        const secondary = await heroButtons.locator('.how-link').boundingBox();
+        expect(primary).not.toBeNull();
+        expect(secondary).not.toBeNull();
+        expect(Math.abs(primary!.width - secondary!.width)).toBeLessThan(1);
+        expect(Math.abs(primary!.height - secondary!.height)).toBeLessThan(1);
+        expect(secondary!.y - primary!.y - primary!.height).toBeCloseTo(12, 0);
+      } else {
+        for (const label of await heroButtons.locator('.mobile-label').all()) await expect(label).toBeHidden();
+      }
       await page.screenshot({ path: `test-results/layout-${locale ? 'en' : 'sr'}-${test.info().project.name}-${width}.png`, fullPage: true });
     }
     // 1280px display at 200% browser zoom exposes a 640px CSS viewport.
@@ -111,8 +142,16 @@ for (const locale of ['', 'en/']) {
     const drawer = page.locator('.mobile-drawer');
     await expect(page.locator('.hero-image')).toBeHidden();
     await expect(page.locator('.trust-item')).toHaveCount(5);
-    const positions = await page.locator('.trust-item').evaluateAll(items => items.map(item => item.getBoundingClientRect().top));
-    expect(positions.every((top, i) => i === 0 || top > positions[i - 1])).toBe(true);
+    const positions = await page.locator('.trust-item').evaluateAll(items => items.map(item => {
+      const { top, left, width } = item.getBoundingClientRect();
+      return { top, left, width };
+    }));
+    expect(positions[0].top).toBe(positions[1].top);
+    expect(positions[2].top).toBe(positions[3].top);
+    expect(positions[2].top).toBeGreaterThan(positions[0].top);
+    expect(positions[4].top).toBeGreaterThan(positions[2].top);
+    expect(positions[1].left).toBeGreaterThan(positions[0].left);
+    expect(positions[4].width).toBeGreaterThan(positions[0].width * 2);
     await page.evaluate(() => window.scrollTo(0, 250));
     await expect(header).toHaveClass(/header-hidden/);
     await page.evaluate(() => window.scrollTo(0, 200));

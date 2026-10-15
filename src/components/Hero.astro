@@ -12,7 +12,10 @@ const { hero: h } = Astro.props.content;
       <p class="eyebrow">{h.eyebrow}</p>
       <h1 id="hero-heading"><strong>LAN-ICT</strong><span>OFFSITE<br />{h.displayTitle}</span></h1>
       {h.text.split("\n\n").map(paragraph => <p class="hero-description">{paragraph}</p>)}
-      <div class="hero-buttons"><a class="button" href="#pricing">{h.pricing}<Icon name="arrow" size={21} /></a><a class="how-link" href="#technical"><span class="play-circle"><Icon name="play" size={18} /></span><span>{h.how}</span></a></div>
+      <div class="hero-buttons">
+        <a class="button" href="#pricing"><span class="desktop-label">{h.pricing}</span><span class="mobile-label">{h.mobilePricing}</span><Icon name="arrow" size={21} /></a>
+        <a class="how-link" href="#technical"><span class="play-circle"><Icon name="play" size={18} /></span><span class="desktop-label">{h.how}</span><span class="mobile-label">{h.mobileHow}</span></a>
+      </div>
     </div>
   </div>
   <svg class="bottom-wave" viewBox="0 0 600 130" preserveAspectRatio="none" aria-hidden="true"><path d="M0 15Q130 115 600 130H0Z" fill="#bedff4"/><path d="M0 48Q140 126 600 130H0Z" fill="#197ab9"/><path d="M0 70Q160 130 600 130H0Z" fill="#eaf5ff"/></svg>
@@ -28,6 +31,7 @@ const { hero: h } = Astro.props.content;
   h1 span { display: block; color: #3d6084; margin-top: .3rem; max-width: 610px; }
   .hero-description { color: #314a62; max-width: 500px; font-size: clamp(1rem,1.35vw,1.2rem); line-height: 1.6; margin-block: 0 1.8rem; }
   .hero-buttons { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; }
+  .mobile-label { display: none; }
   .hero-buttons .button { min-height: 58px; padding: 1rem 1.6rem; text-transform: uppercase; letter-spacing: .025em; font-size: .76rem; box-shadow: 0 12px 25px #0065bf20; }
   .how-link { display: inline-flex; gap: .75rem; align-items: center; text-decoration: none; font-size: .78rem; font-weight: 500; max-width: 190px; line-height: 1.5; }
   .play-circle { display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid #a3b6ca; border-radius: 50%; flex-shrink: 0; background: #ffffffb0; color: var(--navy); }
@@ -47,12 +51,23 @@ const { hero: h } = Astro.props.content;
   @media (max-width: 767px) {
     .hero-image { display: none; }
     .hero-content { padding-block: 2.4rem 2rem; }
-    .trust-items { grid-template-columns: 1fr; gap: 0; padding-block: .5rem; }
-    .trust-item { gap: 1rem; padding-block: .85rem; border-bottom: 1px solid var(--border); }
-    .trust-item:last-child { border-bottom: 0; }
-    .trust-item p { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem; font-size: .85rem; }
-    .trust-item strong { font-size: .85rem; text-transform: none; }
-    .trust-item span { margin: 0; }
+    .hero-buttons { flex-direction: column; align-items: stretch; gap: .75rem; }
+    .hero-buttons .desktop-label { display: none; }
+    .hero-buttons .mobile-label { display: inline; }
+    .hero-buttons .button, .hero-buttons .how-link { width: 100%; max-width: none; min-height: 52px; padding: .85rem 1.2rem; border-radius: 10px; justify-content: center; gap: .65rem; font-size: .9rem; font-weight: 600; line-height: 1.5; text-transform: none; letter-spacing: 0; }
+    .hero-buttons .button { box-shadow: 0 6px 16px #0065bf15; }
+    .hero-buttons .how-link { background: var(--white); border: 1px solid var(--blue-dark); color: var(--blue-dark); }
+    .hero-buttons .how-link:hover { background: var(--blue-light); }
+    .hero-buttons .play-circle { width: auto; height: auto; border: 0; border-radius: 0; background: transparent; color: inherit; }
+    .trust-items { grid-template-columns: repeat(2,minmax(0,1fr)); gap: .6rem; padding-block: 1rem; }
+    .trust-item { gap: .65rem; padding: .8rem; background: var(--white); border: 1px solid var(--border); border-radius: 10px; }
+    .trust-item svg { width: 26px; height: 26px; flex-shrink: 0; }
+    .trust-item p { font-size: .75rem; line-height: 1.45; }
+    .trust-item strong { font-size: .78rem; text-transform: none; }
+    .trust-item span { margin-top: .1rem; }
+    .trust-item:last-child { grid-column: 1 / -1; justify-content: center; background: var(--blue-light); }
+    .trust-item:last-child p { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem; }
+    .trust-item:last-child span { margin: 0; }
   }
   @media (min-width: 48rem) { .trust-items { grid-template-columns: repeat(5,minmax(0,1fr)); gap: 0; } .trust-item { padding-inline: 1rem; border-right: 1px solid #d1dfeb; } .trust-item:first-child { padding-left: 0; } .trust-item:last-child { border: 0; padding-right: 0; } }
   @media (min-width: 64rem) {

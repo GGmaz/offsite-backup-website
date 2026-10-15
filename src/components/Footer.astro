@@ -4,8 +4,10 @@ import { site, localePath, type Locale } from '../config/site';
 import type { Content } from '../content/types';
 interface Props { content: Content; locale: Locale }
 const { content: c, locale } = Astro.props;
+const archived = Astro.url.pathname.startsWith(`${site.base}/old/`);
+const pagePath = (language: Locale) => localePath(language, archived);
 ---
-<footer><div class="container"><div class="footer-main"><div><a class="footer-brand" href={localePath(locale)}><Icon size={24} />{site.name}</a><p>{c.footer.description}</p><p class="legal-name">{site.business.legalName || c.footer.pending}</p></div><div class="footer-links"><a href={localePath('sr')} lang="sr-Latn">Srpski</a><a href={localePath('en')} lang="en">English</a>{site.business.phone && <a href={`tel:${site.business.phone}`}>{site.business.phone}</a>}{site.business.email && <a href={`mailto:${site.business.email}`}>{site.business.email}</a>}<a href="#top">{c.footer.top} ↑</a></div></div><div class="footer-bottom">© {new Date().getFullYear()} {site.business.legalName || site.name}. {c.footer.copyright}</div></div></footer>
+<footer><div class="container"><div class="footer-main"><div><a class="footer-brand" href={pagePath(locale)}><Icon size={24} />{site.name}</a><p>{c.footer.description}</p><p class="legal-name">{site.business.legalName || c.footer.pending}</p></div><div class="footer-links"><a href={pagePath('sr')} lang="sr-Latn">Srpski</a><a href={pagePath('en')} lang="en">English</a>{site.business.phone && <a href={`tel:${site.business.phone}`}>{site.business.phone}</a>}{site.business.email && <a href={`mailto:${site.business.email}`}>{site.business.email}</a>}<a href="#top">{c.footer.top} ↑</a></div></div><div class="footer-bottom">© {new Date().getFullYear()} {site.business.legalName || site.name}. {c.footer.copyright}</div></div></footer>
 <style>
   footer { background: linear-gradient(120deg,#061d41,#073c77); color: #b8c7dc; padding-block: 3rem 1.5rem; }
   .footer-main { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; padding-bottom: 2rem; }

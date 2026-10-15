@@ -23,6 +23,7 @@ const fontStyles = `@font-face {
 }
 `;
 const canonical = absolute(localePath(locale));
+const archived = Astro.url.pathname.startsWith(path('old/'));
 // Organization / Service JSON-LD awaits confirmed legal business details.
 ---
 <!doctype html>
@@ -34,6 +35,7 @@ const canonical = absolute(localePath(locale));
     <style is:inline set:html={fontStyles} />
     <title>{c.title}</title>
     <meta name="description" content={c.description} />
+    {archived && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="sr-Latn" href={absolute(localePath('sr'))} />
     <link rel="alternate" hreflang="en" href={absolute(localePath('en'))} />

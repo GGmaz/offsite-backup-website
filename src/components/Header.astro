@@ -4,16 +4,18 @@ import { site, path, localePath, type Locale } from '../config/site';
 import type { Content } from '../content/types';
 interface Props { content: Content; locale: Locale }
 const { content: c, locale } = Astro.props;
+const archived = Astro.url.pathname.startsWith(`${site.base}/old/`);
+const pagePath = (language: Locale) => localePath(language, archived);
 const ids = ['about', 'technical', 'pricing', 'faq'];
 ---
 <header class="header">
   <div class="container header-inner">
-    <a class="wordmark" href={localePath(locale)} aria-label={site.name}><span class="brand-lockup"><img class="brand-logo" src={path('images/lan-ict-logo.png')} width="573" height="533" alt="" /><span class="brand-type"><span>LAN-ICT</span><small>OFFSITE DATA BACKUP</small></span></span></a>
+    <a class="wordmark" href={pagePath(locale)} aria-label={site.name}><span class="brand-lockup"><img class="brand-logo" src={path('images/lan-ict-logo.png')} width="573" height="533" alt="" /><span class="brand-type"><span>LAN-ICT</span><small>OFFSITE DATA BACKUP</small></span></span></a>
     <button class="menu-toggle" hidden aria-expanded="false" aria-controls="main-nav" data-open={c.menu} data-close={c.close}>{c.menu}<span aria-hidden="true">☰</span></button>
     <nav id="main-nav" aria-label={c.navLabel}>
       <div class="nav-links">{ids.map((id, i) => <a href={`#${id}`}>{c.nav[i]}</a>)}</div>
       <div class="header-actions">
-        <div class="languages"><a href={localePath('sr')} lang="sr-Latn" aria-label="Srpski" aria-current={locale === 'sr' ? 'page' : undefined}>SR</a><span aria-hidden="true">/</span><a href={localePath('en')} lang="en" aria-label="English" aria-current={locale === 'en' ? 'page' : undefined}>EN</a></div>
+        <div class="languages"><a href={pagePath('sr')} lang="sr-Latn" aria-label="Srpski" aria-current={locale === 'sr' ? 'page' : undefined}>SR</a><span aria-hidden="true">/</span><a href={pagePath('en')} lang="en" aria-label="English" aria-current={locale === 'en' ? 'page' : undefined}>EN</a></div>
         <a class="button button-small" href="#contact">{c.quote}<Icon name="arrow" size={17} /></a>
       </div>
     </nav>
@@ -171,9 +173,15 @@ const ids = ['about', 'technical', 'pricing', 'faq'];
   }
   @media (max-width: 24rem) { .brand-logo { width: 48px; } .header-inner { gap: .5rem; } .wordmark { gap: .45rem; } }
   nav.enhanced.is-open { display: block; }
+  @media (min-width: 48rem) {
+    nav, nav.enhanced.is-open { display: flex; align-items: center; gap: 1rem; }
+    .nav-links, .header-actions { flex-wrap: nowrap; }
+    .nav-links a, .header-actions { white-space: nowrap; }
+    .header-actions { margin-left: auto; }
+  }
   @media (min-width: 75rem) {
     .header-inner { flex-wrap: nowrap; gap: 1.5rem; }
-    nav, nav.enhanced, nav.enhanced.is-open { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; width: auto; }
+    nav, nav.enhanced, nav.enhanced.is-open { display: flex; flex: 1; justify-content: flex-end; align-items: center; gap: 1rem; width: auto; }
     .nav-links { gap: .8rem; }
     .menu-toggle:not([hidden]) { display: none; }
     .header-actions { flex-wrap: nowrap; }

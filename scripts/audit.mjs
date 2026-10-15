@@ -5,7 +5,7 @@ const chrome = await launch({ chromePath: process.env.CHROME_PATH, chromeFlags: 
 try {
   await mkdir('reports', { recursive: true });
   for (const locale of ['', 'en/']) {
-    const result = await lighthouse(`http://127.0.0.1:4321/offsite-backup-website/${locale}`, {
+    const result = await lighthouse(`http://127.0.0.1:4321/${locale}`, {
       port: chrome.port, output: ['html', 'json'], onlyCategories: ['performance','accessibility','best-practices','seo'],
     });
     const label = locale ? 'en' : 'sr';

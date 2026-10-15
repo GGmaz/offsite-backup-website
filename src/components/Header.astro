@@ -4,7 +4,7 @@ import { site, path, localePath, type Locale } from '../config/site';
 import type { Content } from '../content/types';
 interface Props { content: Content; locale: Locale }
 const { content: c, locale } = Astro.props;
-const archived = Astro.url.pathname.startsWith(`${site.base}/old/`);
+const archived = Astro.url.pathname.startsWith(path('old/'));
 const pagePath = (language: Locale) => localePath(language, archived);
 const ids = ['about', 'technical', 'pricing', 'faq'];
 ---

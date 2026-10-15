@@ -11,6 +11,7 @@ test('Pages export preserves source, refreshes output and removes only stale gen
     for (const dir of ['scripts', 'src', 'dist/en', 'dist/old/en', 'dist/_astro']) await mkdir(join(root, dir), { recursive: true });
     await cp(new URL('../scripts/prepare-pages.mjs', import.meta.url), join(root, 'scripts/prepare-pages.mjs'));
     await writeFile(join(root, 'src/keep.txt'), 'source stays');
+    await writeFile(join(root, 'dist/CNAME'), 'ebackup.pro\n');
     await writeFile(join(root, 'dist/index.html'), '<h1>Serbian</h1>');
     await writeFile(join(root, 'dist/en/index.html'), '<h1>English</h1>');
     await writeFile(join(root, 'dist/old/index.html'), '<h1>Original Serbian</h1>');
@@ -19,6 +20,7 @@ test('Pages export preserves source, refreshes output and removes only stale gen
     const run = () => execFileSync(process.execPath, [join(root, 'scripts/prepare-pages.mjs')], { stdio: 'pipe' });
     run();
     assert.equal(await readFile(join(root, '.nojekyll'), 'utf8'), '');
+    assert.equal(await readFile(join(root, 'CNAME'), 'utf8'), 'ebackup.pro\n');
     assert.equal(await readFile(join(root, 'en/index.html'), 'utf8'), '<h1>English</h1>');
     assert.equal(await readFile(join(root, 'old/index.html'), 'utf8'), '<h1>Original Serbian</h1>');
     assert.equal(await readFile(join(root, 'old/en/index.html'), 'utf8'), '<h1>Original English</h1>');

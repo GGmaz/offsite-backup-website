@@ -11,7 +11,7 @@ export default defineConfig({
   },
   webServer: {
     command: `npm run preview -- --host 127.0.0.1 --port ${new URL(baseURL).port || '4321'} --ignore-lock`,
-    url: `${baseURL}/offsite-backup-website/`,
+    url: `${baseURL}/`,
     reuseExistingServer: !process.env.CI,
   },
   projects: [

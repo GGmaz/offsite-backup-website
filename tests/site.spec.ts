@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-const base = '/offsite-backup-website/';
+const base = '/';
 test('original copy stays on old routes when switching languages', async ({ page }) => {
   await page.goto(base + 'old/');
   await expect(page.locator('#about .about-description')).toContainText('Mi ne prodajemo diskove');
@@ -103,16 +103,32 @@ test('assets and SEO use the deployment base', async ({ page, request }) => {
   for (const locale of ['', 'en/']) {
     await page.goto(base + locale);
     await page.evaluate(() => document.fonts.ready);
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://ggmaz.github.io${base}${locale}`);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://ebackup.pro${base}${locale}`);
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', `https://ebackup.pro${base}${locale}`);
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', `https://ebackup.pro/social-preview-${locale ? 'en' : 'sr'}.png`);
+    const css = await page.locator('link[rel="stylesheet"]').evaluateAll(links => links.map(link => link.getAttribute('href')));
+    // Preview serves built CSS; dev mode injects styles instead.
+    for (const href of css) expect(href).toMatch(/^\/_astro\//);
+    const imagePaths = await page.locator('img').evaluateAll(images => images.map(img => img.getAttribute('src')));
+    for (const src of imagePaths) expect(src).toMatch(/^\/images\//);
+    await expect(page.locator('link[rel="preload"][as="font"]')).toHaveAttribute('href', '/fonts/inter-latin.woff2');
+    const localUrls = await page.locator('[href], [src]').evaluateAll(elements => elements.flatMap(el => [el.getAttribute('href'), el.getAttribute('src')]).filter(Boolean));
+    for (const url of localUrls) {
+      expect(url).not.toContain('/offsite-backup-website/');
+      expect(url).not.toMatch(/^\/\//);
+    }
     await expect(page.locator('h1')).toHaveCount(1);
     const urls = await page.locator('link[rel="alternate"]').evaluateAll(links => links.map(link => link.getAttribute('href')));
-    expect(urls).toEqual([`https://ggmaz.github.io${base}`, `https://ggmaz.github.io${base}en/`, `https://ggmaz.github.io${base}`]);
+    expect(urls).toEqual([`https://ebackup.pro${base}`, `https://ebackup.pro${base}en/`, `https://ebackup.pro${base}`]);
   }
   expect(errors).toEqual([]);
+  for (const asset of ['/fonts/inter-latin.woff2', '/fonts/inter-latin-ext.woff2', '/images/security-hero.webp', '/images/lan-ict-logo.png', '/images/support-desk.webp']) {
+    expect((await request.get(asset)).status()).toBe(200);
+  }
   const sitemap = await request.get(base + 'sitemap.xml');
   expect(sitemap.status()).toBe(200);
-  expect(await sitemap.text()).toContain(`https://ggmaz.github.io${base}en/`);
-  expect(await (await request.get(base + 'robots.txt')).text()).toContain(`https://ggmaz.github.io${base}sitemap.xml`);
+  expect(await sitemap.text()).toContain(`https://ebackup.pro${base}en/`);
+  expect(await (await request.get(base + 'robots.txt')).text()).toContain(`https://ebackup.pro${base}sitemap.xml`);
 });
 test('without JavaScript navigation and inert fields still work', async ({ browser }) => {
   const context = await browser.newContext({ baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4321', javaScriptEnabled: false, reducedMotion: 'reduce' });

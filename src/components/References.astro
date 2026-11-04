@@ -1,0 +1,47 @@
+---
+import { references } from '../content/references';
+import { path } from '../config/site';
+import type { Content } from '../content/types';
+interface Props { content: Content }
+const { references: c } = Astro.props.content;
+---
+<section id="references" class="section references-section" aria-labelledby="references-heading">
+  <div class="container">
+    <div class="section-intro centered">
+      <h2 id="references-heading">{c.title}</h2>
+      <p class="section-text">{c.text}</p>
+    </div>
+    <ul class="references-grid">
+      {references.map(company => {
+        const Tag = company.website ? 'a' : 'div';
+        return <li>
+          <Tag class="reference-card" href={company.website} target={company.website ? '_blank' : undefined} rel={company.website ? 'noopener noreferrer' : undefined}>
+            <div class:list={['reference-logo', company.variant]} aria-hidden="true">
+              {company.logo
+                ? <img src={path(`images/${company.logo}`)} width={company.width} height={company.height} alt="" loading="lazy" decoding="async" />
+                : <span class="reference-wordmark">ALIVAGO</span>}
+            </div>
+            <span class="reference-name">{company.name}{company.website && <><span class="external-arrow" aria-hidden="true">↗</span><span class="sr-only"> ({c.newTab})</span></>}</span>
+          </Tag>
+        </li>;
+      })}
+    </ul>
+  </div>
+</section>
+<style>
+  .references-section { border-top: 1px solid var(--border); background: #fff; }
+  .references-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; list-style: none; padding: 0; margin: 2.5rem 0 0; }
+  .references-grid li { min-width: 0; }
+  .reference-card { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 226px; padding: 1.25rem; background: #fff; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; }
+  a.reference-card { transition: border-color .15s, box-shadow .15s; }
+  a.reference-card:hover { border-color: #88b8df; box-shadow: 0 6px 22px #072b620c; }
+  .reference-logo { display: flex; align-items: center; justify-content: center; width: 100%; height: 148px; overflow: hidden; }
+  .reference-logo img { display: block; width: auto; height: auto; max-width: min(100%, 210px); max-height: 130px; object-fit: contain; }
+  .reference-logo.bjelica img { width: 200px; max-height: none; flex-shrink: 0; }
+  .reference-wordmark { color: var(--navy); font-size: clamp(1.35rem, 3vw, 1.9rem); font-weight: 650; letter-spacing: .14em; }
+  .reference-name { display: flex; align-items: center; justify-content: center; gap: .5rem; color: var(--navy); font-size: .9rem; font-weight: 600; text-align: center; line-height: 1.5; margin-top: .75rem; }
+  .external-arrow { color: var(--blue-dark); font-size: 1rem; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+  @media (min-width: 25rem) { .references-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 64rem) { .references-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; } }
+</style>

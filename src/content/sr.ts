@@ -156,6 +156,11 @@ export const sr: Content = {
       },
     ],
   },
+  references: {
+    title: "Referentna lista",
+    text: "Kompanije koje nam poveravaju čuvanje svojih podataka.",
+    newTab: "otvara se u novom tabu",
+  },
   contact: {
     eyebrow: "ISPLANIRAJMO VAŠ BACKUP",
     title: "Počnimo od vaših potreba.",

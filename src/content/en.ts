@@ -156,6 +156,11 @@ export const en: Content = {
       },
     ],
   },
+  references: {
+    title: "Our clients",
+    text: "Companies that trust us to keep their data safe.",
+    newTab: "opens in a new tab",
+  },
   contact: {
     eyebrow: "LET’S PLAN YOUR BACKUP",
     title: "Start with your needs.",

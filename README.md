@@ -40,6 +40,7 @@ Send `$push` to Codex to authorize `git add .`, `git commit -m "<generated short
 - `src/content/sr.ts` and `en.ts`: current Serbian/English copy, checked against a common TypeScript interface.
 - `src/content/packages.ts`: shared monthly prices, storage limits, setup and physical recovery prices, plus graphical-access and recommended-package flags. Retention wording and other translated package text live in the locale content files.
 - `src/config/site.ts`: site origin, deployment base, brand name and business contact details. Support phone is `+381604740388`; email is `info@ebackup.pro`. Both appear as clickable links in the contact section and footer. Empty contact values are hidden; address and working hours are currently omitted. The empty legal name does not render a placeholder in the footer.
+- `src/content/references.ts`: six client cards before contact, using short names only. Optional website links open in a new tab; missing logos use a text wordmark. Supplied logos are in `public/images/reference-*`. AB & CO links to `https://abco.co.rs/`, supplied by the site owner.
 - `src/components/`: shared page sections and small browser interactions.
 - `src/styles/global.css`: design tokens, base typography and accessible controls. Section styling is scoped to each component.
 - `public/fonts/`: self-hosted Inter variable WOFF2 Latin and Latin Extended subsets, with the OFL license. Serbian č, ć, š, ž and đ are covered. Font URLs use the configured deployment base.

@@ -69,7 +69,7 @@ export const en: Content = {
       },
       {
         title: "A copy beyond your premises",
-        text: "A remote copy helps with equipment failure, damage or theft. Recovery depends on a valid backup and an available decryption key. Keep an independent local copy as part of your recovery plan.",
+        text: "A remote copy helps with equipment failure, damage or theft. Keep an independent local copy as part of your recovery plan.",
       },
     ],
   },
@@ -113,6 +113,7 @@ export const en: Content = {
     upTo: "Up to",
     storage: "Storage",
     from: "From",
+    to: "to",
     retention: "Retention period",
     retentions: [
       "agreed number of days",
@@ -146,7 +147,7 @@ export const en: Content = {
         question:
           "What if we need data or a version of it from eight months ago?",
         answer:
-          "The number of days for which data is retained is agreed according to your needs and any legal obligations. The retention period applies to data successfully transferred and stored in the backup system.\n\nIf a backup has not completed successfully for any reason, we cannot guarantee data availability for that period. Regularly checking backup success is therefore essential to identify and resolve any problems in time.",
+          "The number of days for which data is retained is agreed according to your needs and any legal obligations. The retention period applies to data successfully transferred and stored in the backup system.\n\nRegularly checking backup success is essential to identify and resolve any problems in time.",
       },
       {
         question: "Will backup transfers slow down my connection during work?",
@@ -162,7 +163,7 @@ export const en: Content = {
     details: ["Address", "Support phone", "Email", "Working hours"],
     pending: "To be confirmed before launch",
     notice:
-      "Online inquiries are not available yet. Contact details will be added before launch.",
+      "Online inquiries are not available yet. Please contact us by email or phone.",
     required: "Fields marked * are required when inquiries become available.",
     name: "Full name",
     company: "Company",

@@ -1,5 +1,5 @@
 export const packages = [
   { id: 'Basic', price: 85, storage: '2.5', setup: 50, disk: 100, gui: false, recommended: false },
   { id: 'Standard', price: 140, storage: '5.0', setup: 50, disk: 100, gui: false, recommended: true },
-  { id: 'Premium', price: 220, storage: '5', setup: 50, disk: 100, gui: true, recommended: false },
+  { id: 'Premium', price: 220, storage: '5', storageMax: 15, setup: 50, disk: 100, gui: true, recommended: false },
 ] as const;

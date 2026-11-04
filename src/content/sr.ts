@@ -69,7 +69,7 @@ export const sr: Content = {
       },
       {
         title: "Kopija van vaše lokacije",
-        text: "Udaljena kopija pomaže pri kvaru, oštećenju opreme ili krađi. Oporavak zavisi od ispravnosti kopije i dostupnosti ključa. Zadržite i nezavisnu lokalnu kopiju kao deo plana oporavka.",
+        text: "Udaljena kopija pomaže pri kvaru, oštećenju opreme ili krađi. Zadržite i nezavisnu lokalnu kopiju kao deo plana oporavka.",
       },
     ],
   },
@@ -113,6 +113,7 @@ export const sr: Content = {
     upTo: "Do",
     storage: "Prostor",
     from: "Od",
+    to: "do",
     retention: "Period čuvanja",
     retentions: [
       "dogovoren broj dana",
@@ -146,7 +147,7 @@ export const sr: Content = {
         question:
           "Šta ako nam zatreba podatak ili njegova verzija od pre osam meseci?",
         answer:
-          "Broj dana čuvanja podataka utvrđuje se dogovorom, u skladu sa Vašim potrebama i eventualnim zakonskim obavezama. Period čuvanja odnosi se na podatke koji su uspešno preneti i sačuvani u okviru backup sistema.\n\nUkoliko backup iz bilo kog razloga nije uspešno izvršen, ne možemo garantovati dostupnost podatka za taj period. Zato je važno da se redovno proverava uspešnost backup-a kako bi se na vreme uočili i otklonili eventualni problemi.",
+          "Broj dana čuvanja podataka utvrđuje se dogovorom, u skladu sa Vašim potrebama i eventualnim zakonskim obavezama. Period čuvanja odnosi se na podatke koji su uspešno preneti i sačuvani u okviru backup sistema.\n\nVažno je da se redovno proverava uspešnost backup-a kako bi se na vreme uočili i otklonili eventualni problemi.",
       },
       {
         question: "Da li će backup usporiti internet tokom rada?",
@@ -162,7 +163,7 @@ export const sr: Content = {
     details: ["Adresa", "Telefon podrške", "Email", "Radno vreme"],
     pending: "Biće potvrđeno pre pokretanja",
     notice:
-      "Slanje upita još nije dostupno. Kontakt podaci biće dodati pre pokretanja.",
+      "Slanje upita još nije dostupno. Kontaktirajte nas putem emaila ili telefona.",
     required:
       "Polja označena sa * biće obavezna kada slanje upita bude dostupno.",
     name: "Ime i prezime",

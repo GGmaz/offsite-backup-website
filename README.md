@@ -1,6 +1,6 @@
 # Offsite Backup website
 
-A bilingual, static Astro + TypeScript website for remote video backup at technical inspection centers. Serbian Latin is the default; English is at `/en/`. Shared components and plain CSS keep the browser payload small. No backend, analytics, email delivery or service integration is included.
+A bilingual, static Astro + TypeScript website for encrypted offsite backup of business data. Serbian Latin is the default; English is at `/en/`. Shared components and plain CSS keep the browser payload small. No backend, analytics, email delivery or service integration is included.
 
 ## Local development
 
@@ -13,7 +13,7 @@ npm ci
 npm run dev
 ```
 
-Open `http://localhost:4321/offsite-backup-website/`, or append `en/` for English.
+Open `http://localhost:4321/`, or `http://localhost:4321/en/` for English. The configured base path is `/`.
 
 ```sh
 npm run check       # Astro and TypeScript diagnostics
@@ -25,9 +25,9 @@ npm run test:pages   # Root export and safe stale-file cleanup checks
 npm run audit       # Lighthouse; start the production preview first
 ```
 
-Astro 7 may start a background preview when run by an agent. `npm run preview -- stop` stops it. Use `npm run preview -- --ignore-lock --host 127.0.0.1` for a foreground instance. Tests manage their own preview unless one is already available. Set `CHROME_PATH=/path/to/chrome` for an existing Chrome installation; otherwise Playwright uses its installed Chromium. Set `ASTRO_TELEMETRY_DISABLED=1` to disable Astro tooling telemetry, as CI does.
+Astro 7 may start development and preview servers in the background when run by an agent. Use `npm run dev -- status` to inspect the development server and `npm run dev -- stop` to stop it. `npm run preview -- stop` stops the preview server. Use `npm run preview -- --ignore-lock --host 127.0.0.1` for a foreground instance. Tests manage their own preview unless one is already available. Set `CHROME_PATH=/path/to/chrome` for an existing Chrome installation; otherwise Playwright uses its installed Chromium. Set `ASTRO_TELEMETRY_DISABLED=1` to disable Astro tooling telemetry.
 
-Set `PLAYWRIGHT_BASE_URL` to test an already-running static server with the same site base path.
+Set `PLAYWRIGHT_BASE_URL` to use another test server URL, for example `http://127.0.0.1:4322` when development already uses port 4321. Tests reuse an existing server at that URL; otherwise they start a production preview there. For production verification, use a free port or an already-running production/static server. The Lighthouse script currently targets port 4321.
 
 Lighthouse writes local HTML/JSON reports to `reports/`; Playwright screenshots go to `test-results/`. Both directories are ignored by Git. `npm audit` is the dependency security audit; `npm run audit` measures page quality.
 
@@ -37,30 +37,42 @@ Send `$push` to Codex to authorize `git add .`, `git commit -m "<generated short
 
 ## Content and configuration
 
-- `src/content/sr.ts` and `en.ts`: translations checked against a common TypeScript interface.
-- `src/content/packages.ts`: shared prices, storage, daily growth, retention, setup and physical recovery prices.
-- `src/config/site.ts`: site origin, deployment base, wordmark and genuine business contact details. Empty business fields render visible launch placeholders. Add real values here to enable phone/email links in the contact area and footer.
+- `src/content/sr.ts` and `en.ts`: current Serbian/English copy, checked against a common TypeScript interface.
+- `src/content/packages.ts`: shared monthly prices, storage limits, setup and physical recovery prices, plus graphical-access and recommended-package flags. Retention wording and other translated package text live in the locale content files.
+- `src/config/site.ts`: site origin, deployment base, brand name and business contact details. Support phone is `+381604740388`; email is `info@ebackup.pro`. Both appear as clickable links in the contact section and footer. Empty contact values are hidden; address and working hours are currently omitted. The empty legal name does not render a placeholder in the footer.
 - `src/components/`: shared page sections and small browser interactions.
 - `src/styles/global.css`: design tokens, base typography and accessible controls. Section styling is scoped to each component.
 - `public/fonts/`: self-hosted Inter variable WOFF2 Latin and Latin Extended subsets, with the OFL license. Serbian č, ć, š, ž and đ are covered. Font URLs use the configured deployment base.
+- `public/images/lan-ict-logo.png`: shared header/footer logo. The footer uses three columns on desktop (brand, contact, quick links), stacked on mobile, with language links in the bottom row.
 - `public/social-preview-sr.png`, `social-preview-en.png` and `favicon.svg`: local brand assets.
+- `public/CNAME`: custom domain for the generated GitHub Pages export (`ebackup.pro`).
 
 All language links, fonts, metadata and public assets follow `site.base`. The layout supplies canonical, reciprocal `hreflang`, social metadata and correct document language. Static sitemap and robots endpoints use the same configuration. Organization/Service structured data is deliberately deferred until the legal identity and business facts are confirmed.
 
-Package and consultation links select an editable inquiry option and scroll to contact. Without JavaScript they remain ordinary anchors. Mobile navigation stays in document flow; with JavaScript its button supports Escape and closes after link selection. FAQ uses native disclosure controls.
+Package and consultation links select an editable inquiry option and scroll to contact. Without JavaScript they remain ordinary anchors. With JavaScript, mobile navigation opens in a modal drawer with keyboard focus handling, Escape and close controls; selecting a link closes it. The mobile header hides while scrolling down and returns while scrolling up. Without JavaScript, navigation stays in document flow. Technical specifications and pricing use accordions on mobile; without JavaScript their content remains visible. FAQ uses native disclosure controls.
+
+Current package display:
+
+| Package | Monthly price | Storage | Retention |
+| --- | ---: | --- | --- |
+| Basic | €85 | Up to 2.5 TB | Agreed number of days |
+| Standard | €140 | Up to 5.0 TB | 365 days |
+| Premium | €220 | From 5 to 15 TB | 365 + agreed number of days |
+
+Setup is €50 for every package. Physical disk recovery costs €100 per case for Basic/Standard; Premium includes one case per year, then €100 per case. Only Premium includes graphical access. Keep these values aligned with the shared package configuration and both translations.
 
 ## Inquiry delivery is deferred
 
 The Send inquiry button is `type="button"` and has no click handler. The input group is a labeled `fieldset` with no form owner, so Enter cannot submit even when JavaScript is disabled. An additional key handler prevents Enter in single-line fields. There is no endpoint, field logging, local storage, mailto submission, validation success flow or fake confirmation. Visible labels and notices explain that online inquiries are not available yet.
 
-Delivery integration, destination inbox, related privacy text and actual sending tests require a separate authorized task. Contact details are currently missing, and must be supplied before launch.
+Delivery integration, destination inbox configuration, related privacy text and actual sending tests require a separate authorized task. The published contact links already point to the support phone and `info@ebackup.pro`; adding them does not enable online inquiry delivery.
 
 ## GitHub Pages deployment
 
 Configured production URLs:
 
-- Serbian: `https://ggmaz.github.io/offsite-backup-website/`
-- English: `https://ggmaz.github.io/offsite-backup-website/en/`
+- Serbian: `https://ebackup.pro/`
+- English: `https://ebackup.pro/en/`
 
 The repository owner manages GitHub Pages publishing from `main` in GitHub settings. The project contains no custom deployment workflow or publication gate.
 
@@ -68,22 +80,22 @@ The repository owner manages GitHub Pages publishing from `main` in GitHub setti
 
 After editing content, run `npm run check` and `npm run build` to refresh the published files. Commit and push only with explicit permission, such as `$push`. Edit `src/` and `public/`, not generated root HTML/assets. `scripts/prepare-pages.mjs` records generated files in `.pages-files.json` and removes only obsolete files listed there. The `$push` shortcut runs only the three Git commands; rebuilding is a separate step.
 
-The Astro origin and base path are retained for correct asset links, locale routes and canonical URLs. A custom domain would require updating `site.origin` and `site.base`. After pushing, check both locale routes, direct refresh, fonts and package CTAs. Roll back with a revert and rebuild before pushing.
+The configured custom domain is `ebackup.pro`: `site.origin` is `https://ebackup.pro`, `site.base` is `/`, and `public/CNAME` is copied into the root export. If the domain or deployment path changes, update these together and rebuild. These files describe the intended deployment; they do not verify live DNS or GitHub Pages settings. After pushing, check both locale routes, direct refresh, fonts and package CTAs. Roll back with a revert and rebuild before pushing.
 
 ## Launch dependencies
 
-The website visibly marks missing business details and qualifies retention/compliance statements. Confirm before launch:
+Contact phone/email and the brand logo are configured. The inquiry form remains inactive, legal identity is not configured, and the FAQ still contains pre-launch wording about key custody and recovery. Confirm remaining operational and commercial details before launch:
 
-- Brand, logo, legal identity, address, support phone/email and working hours.
-- Country, applicable recording regulation and approval of Serbian/English commercial and technical copy. Basic retains 180 days, so it cannot meet a 365-day requirement.
-- VAT treatment, billing, contract, cancellation, overages and whether limits apply per company, site or inspection line.
-- Premium archive duration and rolling/archive meaning. At maximum intake, 25 GB/day × 365 is about 9.13 TB before overhead, leaving limited extended-archive headroom within 10 TB. Do not assume video deduplication resolves capacity limits.
-- Key custody and recovery practices, especially the Premium browser. The product identity/URL and operational model of the proposed “Open Snapshot Browser” remain unverified; the site avoids naming it.
+- Legal identity and approval of Serbian/English commercial and technical copy. Address and working hours are intentionally not displayed.
+- Applicable retention and compliance requirements for each customer. Basic has an agreed retention period; the previous fixed 180-day description is obsolete.
+- VAT treatment, billing, contract, cancellation, overages and whether limits apply per company or site.
+- Premium archive duration, the meaning of the 5–15 TB range and capacity planning for the customer's actual data volume. The previous 10 TB ceiling and fixed daily-intake assumptions are no longer the displayed package specification.
+- Key custody and recovery practices, especially Premium graphical access. The site does not identify a specific browser product or integration.
 - Physical disk recovery delivery area, shipping costs and turnaround.
-- GitHub Pages commercial hosting eligibility, and future inquiry delivery/privacy requirements.
+- Hosting suitability for the intended use, and future inquiry delivery/privacy requirements.
 
-### Dependency audit limitation
+### Historical verification and dependency audit
 
-At implementation verification on 2026-10-03, `npm audit` reported one high-severity upstream issue in `http-cache-semantics@4.2.0` (also attributed to direct dependent Astro): [GHSA-ch52-4w7c-c8xp](https://github.com/advisories/GHSA-ch52-4w7c-c8xp), concerning cross-user HTTP cache responses. npm’s latest release remained 4.2.0 and no patched version was available. Its suggested forced fix downgrades Astro to 2.10.9, which is inappropriate for this project. The deployed output is static files with no Astro server, authentication or cross-user response cache. Recheck the advisory and upgrade the dependency when a supported fix becomes available; do not expose the development/preview server publicly.
+[VERIFICATION.md](VERIFICATION.md) records dated checks and measurements. Its test counts, exported-file counts and Lighthouse scores describe those runs, not a fresh verification of the current tree.
 
-Measured verification is recorded in [VERIFICATION.md](VERIFICATION.md).
+The dependency audit recorded on 2026-10-03 reported a high-severity issue in `http-cache-semantics@4.2.0` ([GHSA-ch52-4w7c-c8xp](https://github.com/advisories/GHSA-ch52-4w7c-c8xp)). That finding and the then-available remediation are historical; current advisory status has not been rechecked as part of this README update. Run `npm audit` to reassess the installed dependency tree before making upgrade decisions. The deployed build consists of static files and does not run an Astro server.

@@ -9,7 +9,7 @@ const details = [site.business.address, site.business.phone, site.business.email
 ---
 <section id="contact" class="section surface" aria-labelledby="contact-heading"><div class="container contact-grid">
   <div><p class="eyebrow">{c.eyebrow}</p><h2 id="contact-heading">{c.title}</h2><p class="section-text">{c.text}</p>
-    <dl class="business-details">{c.details.map((label, i) => <div><dt>{label}</dt><dd>{details[i] ? i === 1 ? <a href={`tel:${details[i].replace(/\s/g, '')}`}>{details[i]}</a> : i === 2 ? <a href={`mailto:${details[i]}`}>{details[i]}</a> : details[i] : <span class="pending">{c.pending}</span>}</dd></div>)}</dl>
+    <dl class="business-details">{c.details.map((label, i) => details[i] && <div><dt>{label}</dt><dd>{details[i] ? i === 1 ? <a href={`tel:${details[i].replace(/\s/g, '')}`}>{details[i]}</a> : i === 2 ? <a href={`mailto:${details[i]}`}>{details[i]}</a> : details[i] : <span class="pending">{c.pending}</span>}</dd></div>)}</dl>
   </div>
   <div class="form-card">
     <p id="inquiry-notice" class="form-notice"><Icon name="clock" size={20} /><span>{c.notice}</span></p>

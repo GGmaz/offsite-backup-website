@@ -5,12 +5,12 @@ export const site = {
   business: {
     legalName: '',
     address: '',
-    phone: '',
-    email: '',
+    phone: '+381604740388',
+    email: 'info@ebackup.pro',
     hours: '',
   },
 };
 export type Locale = 'sr' | 'en';
 export const path = (value = '') => `${site.base.replace(/\/$/, '')}/${value.replace(/^\/+/, '')}`;
-export const localePath = (locale: Locale, archived = false) => path(`${archived ? 'old/' : ''}${locale === 'en' ? 'en/' : ''}`);
+export const localePath = (locale: Locale) => path(locale === 'en' ? 'en/' : '');
 export const absolute = (value: string) => new URL(value, site.origin).href;

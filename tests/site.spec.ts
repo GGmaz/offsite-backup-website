@@ -1,22 +1,11 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 const base = '/';
-test('original copy stays on old routes when switching languages', async ({ page }) => {
-  await page.goto(base + 'old/');
-  await expect(page.locator('#about .about-description')).toContainText('Mi ne prodajemo diskove');
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
-  await expect(page.locator('.wordmark')).toHaveAttribute('href', base + 'old/');
-  const menu = page.locator('.menu-toggle');
-  if (await menu.isVisible()) await menu.click();
-  await page.locator('.languages a[lang="en"]').click();
-  await expect(page).toHaveURL(base + 'old/en/');
-  await expect(page.locator('#about .about-description')).toContainText('We do not sell disks');
-  await page.locator('.footer-links a[lang="sr-Latn"]').click();
-  await expect(page).toHaveURL(base + 'old/');
-  await page.goto(base);
-  await expect(page.locator('#about .about-description')).toContainText('Udaljena kopija pomaže');
-  await expect(page.locator('#about .about-description')).not.toContainText('Mi ne prodajemo diskove');
-  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+test('retired routes return 404', async ({ request }) => {
+  for (const route of ['old/', 'old/en/']) {
+    const response = await request.get(base + route);
+    expect(response.status()).toBe(404);
+  }
 });
 for (const locale of ['', 'en/']) {
   test(`${locale || 'sr'} locale, pricing selection and inactive inquiry`, async ({ page }) => {

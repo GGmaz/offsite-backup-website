@@ -5,7 +5,10 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const build = join(root, 'dist');
 const manifest = join(root, '.pages-files.json');
-const allowed = file => /^(?:CNAME|index\.html|robots\.txt|sitemap\.xml|favicon\.svg|social-preview-(?:sr|en)\.png|en\/index\.html|old\/(?:en\/)?index\.html|(?:_astro|fonts|images)\/[\w.-]+)$/.test(file);
+const allowed = file => /^(?:CNAME|index\.html|robots\.txt|sitemap\.xml|favicon\.svg|social-preview-(?:sr|en)\.png|en\/index\.html|(?:_astro|fonts|images)\/[\w.-]+)$/.test(file);
+
+// Accept retired route entries only when cleaning a previous export.
+const allowedPrevious = file => allowed(file) || /^old\/(?:en\/)?index\.html$/.test(file);
 
 async function filesIn(directory, prefix = '') {
   const files = [];
@@ -25,7 +28,7 @@ if (!files.includes('index.html') || !files.includes('en/index.html') || files.s
 let previous = [];
 try { previous = JSON.parse(await readFile(manifest, 'utf8')); }
 catch (error) { if (error.code !== 'ENOENT') throw error; }
-if (!Array.isArray(previous) || previous.some(file => typeof file !== 'string' || !allowed(file))) {
+if (!Array.isArray(previous) || previous.some(file => typeof file !== 'string' || !allowedPrevious(file))) {
   throw new Error('Invalid generated-file manifest; root files were not changed.');
 }
 for (const file of files) {

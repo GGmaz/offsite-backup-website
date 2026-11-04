@@ -1,22 +1,66 @@
 ---
-import Icon from './Icon.astro';
 import { site, path, localePath, type Locale } from '../config/site';
 import type { Content } from '../content/types';
 interface Props { content: Content; locale: Locale }
 const { content: c, locale } = Astro.props;
-const archived = Astro.url.pathname.startsWith(path('old/'));
-const pagePath = (language: Locale) => localePath(language, archived);
+const pagePath = localePath;
+const labels = locale === 'sr'
+  ? { contact: 'Kontaktirajte nas', phone: 'Telefon:', links: 'Brzi linkovi' }
+  : { contact: 'Contact us', phone: 'Phone:', links: 'Quick links' };
+const displayPhone = site.business.phone === '+381604740388' ? '+381 60 474 0388' : site.business.phone;
 ---
-<footer><div class="container"><div class="footer-main"><div><a class="footer-brand" href={pagePath(locale)}><Icon size={24} />{site.name}</a><p>{c.footer.description}</p><p class="legal-name">{site.business.legalName || c.footer.pending}</p></div><div class="footer-links"><a href={pagePath('sr')} lang="sr-Latn">Srpski</a><a href={pagePath('en')} lang="en">English</a>{site.business.phone && <a href={`tel:${site.business.phone}`}>{site.business.phone}</a>}{site.business.email && <a href={`mailto:${site.business.email}`}>{site.business.email}</a>}<a href="#top">{c.footer.top} ↑</a></div></div><div class="footer-bottom">© {new Date().getFullYear()} {site.business.legalName || site.name}. {c.footer.copyright}</div></div></footer>
+<footer>
+  <div class="container">
+    <div class="footer-main">
+      <div class="footer-identity">
+        <a class="footer-brand" href={pagePath(locale)}><img class="footer-logo" src={path('images/lan-ict-logo.png')} width="573" height="533" alt="" loading="lazy" />{site.name}</a>
+        <p class="footer-description">{c.footer.description}</p>
+        {site.business.legalName && <p class="legal-name">{site.business.legalName}</p>}
+      </div>
+      <div>
+        <h2 class="footer-heading">{labels.contact}</h2>
+        <dl class="footer-contact">
+          {site.business.phone && <div><dt>{labels.phone}</dt><dd><a href={`tel:${site.business.phone}`}>{displayPhone}</a></dd></div>}
+          {site.business.email && <div><dt>Email:</dt><dd><a href={`mailto:${site.business.email}`}>{site.business.email}</a></dd></div>}
+        </dl>
+      </div>
+      <nav class="footer-nav" aria-label={labels.links}>
+        <h2 class="footer-heading">{labels.links}</h2>
+        <a href="#about">{c.nav[0]}</a>
+        <a href="#pricing">{c.nav[2]}</a>
+        <a href="#faq">{c.nav[3]}</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} {site.business.legalName || site.name}. {c.footer.copyright}</span>
+      <div class="footer-links">
+        <a href={pagePath('sr')} lang="sr-Latn" aria-label="Srpski" aria-current={locale === 'sr' ? 'page' : undefined}>SR</a>
+        <a href={pagePath('en')} lang="en" aria-label="English" aria-current={locale === 'en' ? 'page' : undefined}>EN</a>
+        <a href="#top">{c.footer.top} ↑</a>
+      </div>
+    </div>
+  </div>
+</footer>
 <style>
-  footer { background: linear-gradient(120deg,#061d41,#073c77); color: #b8c7dc; padding-block: 3rem 1.5rem; }
-  .footer-main { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; padding-bottom: 2rem; }
-  .footer-brand { display: inline-flex; align-items: center; gap: .6rem; color: white; text-decoration: none; font-size: 1.1rem; font-weight: 650; letter-spacing: -.03em; }
-  .footer-brand svg { color: #94ccff; }
-  p { font-size: .8rem; margin-bottom: .4rem; }
-  .legal-name { font-size: .7rem; }
-  .footer-links { display: flex; gap: 1.3rem; flex-wrap: wrap; align-items: flex-start; }
-  .footer-links a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; font-size: .75rem; }
+  footer { background: #08274e; color: #fff; padding-block: 3rem 1rem; }
+  a { text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: .25em; }
+  .footer-main { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-bottom: 2.25rem; }
+  .footer-brand { display: inline-flex; align-items: center; gap: .9rem; font-size: 1.4rem; font-weight: 750; letter-spacing: -.03em; }
+  .footer-logo { display: block; width: 62px; height: auto; border-radius: 50%; flex-shrink: 0; }
+  .footer-description { max-width: 270px; color: #a9bed5; font-size: .875rem; line-height: 1.7; margin: .9rem 0 0; }
+  .legal-name { color: #a9bed5; font-size: .75rem; }
+  .footer-heading { color: #a9bed5; font-size: .65rem; font-weight: 700; line-height: 1.6; letter-spacing: .16em; text-transform: uppercase; margin: 0 0 1rem; }
+  .footer-contact { display: grid; gap: .75rem; margin: 0; }
+  .footer-contact dt { color: #a9bed5; font-size: .72rem; }
+  .footer-contact dd { margin: 0; }
+  .footer-contact a { display: inline-flex; align-items: center; min-height: 44px; font-size: 1.05rem; font-weight: 600; overflow-wrap: anywhere; }
+  .footer-nav a { display: flex; align-items: center; width: fit-content; min-height: 44px; font-size: .85rem; }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem 2rem; border-top: 1px solid #ffffff24; padding-top: .75rem; color: #a9bed5; font-size: .7rem; }
+  .footer-links { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .footer-links a { display: inline-flex; align-items: center; min-height: 44px; }
   .footer-links a:hover { color: white; }
-  .footer-bottom { border-top: 1px solid #ffffff1c; padding-top: 1.4rem; font-size: .68rem; }
+  @media (min-width: 48rem) {
+    .footer-main { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, .7fr); gap: 2.5rem; }
+  }
 </style>

@@ -12,7 +12,7 @@ const { pricing: p } = Astro.props.content;
     <div class="recommendation">{pkg.recommended ? <><Icon name="check" size={16} />{p.recommended}</> : <span aria-hidden="true">&nbsp;</span>}</div>
     <div class="price-content" id={`pricing-panel-${pkg.id}`}><h3 id={`package-${pkg.id}`}>{pkg.id}</h3><p class="package-description">{p.descriptions[i]}</p><p class="price"><strong>€{pkg.price}</strong><span>{p.month}</span></p>
     <dl>
-      <div><dt>{p.storage}</dt><dd>{pkg.id === 'Premium' ? p.from : p.upTo} {pkg.storage} TB</dd></div>
+      <div><dt>{p.storage}</dt><dd>{pkg.id === 'Premium' ? p.from : p.upTo} {pkg.storage}{'storageMax' in pkg && ` ${p.to} ${pkg.storageMax}`} TB</dd></div>
       <div><dt>{p.retention}</dt><dd><strong>{p.retentions[i]}</strong></dd></div>
       <div><dt>{p.gui}</dt><dd>{pkg.gui ? p.included : p.cli}</dd></div>
       <div><dt>{p.disk}</dt><dd>{pkg.id === 'Premium' ? p.annual.replace('{price}', String(pkg.disk)) : `€${pkg.disk} ${p.incident}`}</dd></div>

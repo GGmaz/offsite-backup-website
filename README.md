@@ -1,6 +1,6 @@
 # Offsite Backup website
 
-A bilingual, static Astro + TypeScript website for encrypted offsite backup of business data. Serbian Latin is the default; English is at `/en/`. Shared components and plain CSS keep the browser payload small. No backend, analytics, email delivery or service integration is included.
+A bilingual, static Astro + TypeScript website for encrypted offsite backup of business data. Serbian Latin is the default; English is at `/en/`. Shared components and plain CSS keep the browser payload small. No backend or analytics is included. Contact inquiries use Formspree once its public endpoint is configured.
 
 ## Local development
 
@@ -62,11 +62,36 @@ Current package display:
 
 Setup is €50 for every package. Physical disk recovery costs €100 per case for Basic/Standard; Premium includes one case per year, then €100 per case. Only Premium includes graphical access. Keep these values aligned with the shared package configuration and both translations.
 
-## Inquiry delivery is deferred
+## Contact form email delivery (Formspree)
 
-The Send inquiry button is `type="button"` and has no click handler. The input group is a labeled `fieldset` with no form owner, so Enter cannot submit even when JavaScript is disabled. An additional key handler prevents Enter in single-line fields. There is no endpoint, field logging, local storage, mailto submission, validation success flow or fake confirmation. Visible labels and notices explain that online inquiries are not available yet.
+The integration uses `https://formspree.io/f/mbggwlnl` for the business inbox. Microsoft 365 quarantined previous notifications as phishing; they were manually released. An administrator allow submission has been prepared in Microsoft Defender; fresh inbox delivery needs confirmation after it is submitted and takes effect. The recipient is configured in Formspree, **not** by the website's displayed business email. Set the dashboard notification recipient to `info@ebackup.pro` and verify the address when prompted. No mailbox password, SMTP credentials, paid plan or private API key is needed for basic notifications (subject to Formspree's current free submission quota).
 
-Delivery integration, destination inbox configuration, related privacy text and actual sending tests require a separate authorized task. The published contact links already point to the support phone and `info@ebackup.pro`; adding them does not enable online inquiry delivery.
+### Activate
+
+1. Register at <https://formspree.io/register>, choose the free plan and create a form named `eBackup inquiries`.
+2. Set up email notifications to `info@ebackup.pro`; complete any account/address verification.
+3. Copy the public Integration endpoint, such as `https://formspree.io/f/xxxxxxxx`, into `site.formspreeEndpoint` in `src/config/site.ts`. Alternatively set `PUBLIC_FORMSPREE_ENDPOINT` at build time; it overrides the file value. The URL is public and is included in generated HTML. Only Formspree `/f/` endpoints are accepted; an invalid value fails the build.
+4. In the form's **Settings → Spam protection**, turn **reCAPTCHA off** for this implementation, which sends AJAX requests without a CAPTCHA token. Use Formspree's basic spam filtering and restrict the form to `ebackup.pro` in its domain settings. Use a separate test form or temporarily permit the local origin for real local delivery checks. A custom CAPTCHA widget/token integration can be added later if needed. Do not enable a CAPTCHA requirement without adding its client integration.
+5. Run `npm run check` and `npm run build`. Publish the generated files with explicit Git authorization (`$push`).
+6. Submit a clearly labeled test inquiry from **each published language**. Confirm the full name, company, email, phone, package, message and language arrive at `info@ebackup.pro`; check Spam too. Click Reply and verify it addresses the test client email. The input named `email` supplies Formspree's Reply-To. Confirm the inquiry appears in the Formspree dashboard. Website acceptance confirms Formspree received the request, not inbox delivery.
+
+With no endpoint the input group has no form owner, the button does not submit, and the existing unavailable notice and direct email link remain visible, including without JavaScript. Once configured, it becomes a native POST form. JavaScript adds localized sending/success/error status, native required/email validation, field length limits, a 20-second request timeout and protection against simultaneous submissions. Success clears the form only after Formspree returns an explicit `ok: true` response. Rejections and network errors preserve the fields. An ambiguous network/timeout result asks the visitor to contact support before resending; there are no automatic retries. Without JavaScript the native POST navigates to Formspree's response page.
+
+Client details are sent only on submission, with no field logging or browser storage. A short Serbian/English notice explains the purpose and Formspree processing and links its privacy policy. Review the site's broader privacy information against your actual business identity and retention practices before launch. Automatic emails to the client are not configured.
+
+References: [HTML forms](https://help.formspree.io/articles/building-your-form/building-an-html-form), [Reply-To](https://help.formspree.io/articles/building-your-form/email-reply-to-address/), [CAPTCHA settings](https://help.formspree.io/articles/form-and-project-settings/recaptcha-settings), [domain restriction](https://help.formspree.io/articles/form-and-project-settings/restrict-to-domain).
+
+### Test the integration without sending email
+
+The contact browser tests intercept all Formspree requests and simulate acceptance, rejection, network failures and timeouts. Build with a fixture endpoint to exercise the active form, then rebuild with your actual configuration before publishing:
+
+```sh
+PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/testfixture npm run build
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:4322 CHROME_PATH=/usr/bin/google-chrome npm test
+npm run build
+```
+
+Use a free test port to avoid reusing an unrelated preview. Contact delivery tests explicitly skip when the build has no configured endpoint; the remaining tests verify the inactive fallback. Never publish the fixture build. A mocked test does not establish email delivery; complete step 6 with the real endpoint after publication.
 
 ## GitHub Pages deployment
 
@@ -85,7 +110,7 @@ The configured custom domain is `ebackup.pro`: `site.origin` is `https://ebackup
 
 ## Launch dependencies
 
-Contact phone/email and the brand logo are configured. The inquiry form remains inactive, legal identity is not configured, and the FAQ still contains pre-launch wording about key custody and recovery. Confirm remaining operational and commercial details before launch:
+Contact phone/email and the brand logo are configured. The inquiry form has an endpoint configured but requires verification of Formspree settings and real inbox delivery, legal identity is not configured, and the FAQ still contains pre-launch wording about key custody and recovery. Confirm remaining operational and commercial details before launch:
 
 - Legal identity and approval of Serbian/English commercial and technical copy. Address and working hours are intentionally not displayed.
 - Applicable retention and compliance requirements for each customer. Basic has an agreed retention period; the previous fixed 180-day description is obsolete.

@@ -1,10 +1,12 @@
 ---
 import Icon from './Icon.astro';
-import { site } from '../config/site';
+import { site, formspreeEndpoint } from '../config/site';
 import { packages } from '../content/packages';
 import type { Content } from '../content/types';
 interface Props { content: Content }
 const { contact: c } = Astro.props.content;
+const Form = formspreeEndpoint ? 'form' : 'div';
+const language = Astro.url.pathname.includes('/en/') ? 'en' : 'sr-Latn';
 const details = [site.business.address, site.business.phone, site.business.email, site.business.hours];
 ---
 <section id="contact" class="section surface" aria-labelledby="contact-heading"><div class="container contact-grid">
@@ -12,25 +14,79 @@ const details = [site.business.address, site.business.phone, site.business.email
     <dl class="business-details">{c.details.map((label, i) => details[i] && <div><dt>{label}</dt><dd>{details[i] ? i === 1 ? <a href={`tel:${details[i].replace(/\s/g, '')}`}>{details[i]}</a> : i === 2 ? <a href={`mailto:${details[i]}`}>{details[i]}</a> : details[i] : <span class="pending">{c.pending}</span>}</dd></div>)}</dl>
   </div>
   <div class="form-card">
-    <p id="inquiry-notice" class="form-notice"><Icon name="clock" size={20} /><span>{c.notice}</span></p>
+    {!formspreeEndpoint && <p id="inquiry-notice" class="form-notice"><Icon name="clock" size={20} /><span>{c.notice} <a href={`mailto:${site.business.email}`}>{site.business.email}</a></span></p>}
     <p id="required-note" class="required-note">{c.required}</p>
-    <!-- Fieldset deliberately has no form owner: even without JavaScript Enter cannot send data. -->
-    <fieldset class="inquiry-fields" aria-labelledby="contact-heading" aria-describedby="inquiry-notice required-note">
-      <div class="field"><label for="full-name">{c.name} <span aria-hidden="true">*</span></label><input id="full-name" type="text" required autocomplete="name" /></div>
-      <div class="field"><label for="company">{c.company} <span aria-hidden="true">*</span></label><input id="company" type="text" required autocomplete="organization" /></div>
-      <div class="field"><label for="email">{c.email} <span aria-hidden="true">*</span></label><input id="email" type="email" required autocomplete="email" /></div>
-      <div class="field"><label for="phone">{c.phone} <span aria-hidden="true">*</span></label><input id="phone" type="tel" required autocomplete="tel" /></div>
-      <div class="field field-wide"><label for="package">{c.package}</label><select id="package">{packages.map(pkg => <option value={pkg.id}>{pkg.id}</option>)}<option value="consultation" selected>{c.consultation}</option></select></div>
-      <div class="field field-wide"><label for="message">{c.message}</label><textarea id="message" rows="4"></textarea></div>
-      <div class="field-wide"><button type="button" class="button" aria-describedby="inquiry-notice">{c.send}<Icon name="arrow" size={18} /></button></div>
+    <Form id="inquiry-form" action={formspreeEndpoint || undefined} method={formspreeEndpoint ? 'POST' : undefined} data-sending={c.sending} data-success={c.success} data-error={c.error} data-uncertain={c.uncertain}>
+    <fieldset class="inquiry-fields" aria-labelledby="contact-heading" aria-describedby={formspreeEndpoint ? 'required-note inquiry-privacy' : 'inquiry-notice required-note'}>
+      <input type="hidden" name="_subject" value="eBackup — novi upit / new inquiry" />
+      <input type="hidden" name="language" value={language} />
+      <div class="field"><label for="full-name">{c.name} <span aria-hidden="true">*</span></label><input id="full-name" name="name" maxlength="150" type="text" required autocomplete="name" /></div>
+      <div class="field"><label for="company">{c.company} <span aria-hidden="true">*</span></label><input id="company" name="company" maxlength="200" type="text" required autocomplete="organization" /></div>
+      <div class="field"><label for="email">{c.email} <span aria-hidden="true">*</span></label><input id="email" name="email" maxlength="254" type="email" required autocomplete="email" /></div>
+      <div class="field"><label for="phone">{c.phone} <span aria-hidden="true">*</span></label><input id="phone" name="phone" maxlength="60" type="tel" required autocomplete="tel" /></div>
+      <div class="field field-wide"><label for="package">{c.package}</label><select id="package" name="package">{packages.map(pkg => <option value={pkg.id}>{pkg.id}</option>)}<option value="consultation" selected>{c.consultation}</option></select></div>
+      <div class="field field-wide"><label for="message">{c.message}</label><textarea id="message" name="message" maxlength="5000" rows="4"></textarea></div>
+      {formspreeEndpoint && <p id="inquiry-privacy" class="field-wide privacy-note">{c.privacy} <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">{c.privacyLink}</a></p>}
+      <div class="field-wide"><button type={formspreeEndpoint ? 'submit' : 'button'} class="button" aria-describedby={formspreeEndpoint ? undefined : 'inquiry-notice'}><span data-submit-label>{c.send}</span><Icon name="arrow" size={18} /></button></div>
     </fieldset>
+    <p id="inquiry-status" class="form-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></p>
+    </Form>
   </div>
 </div></section>
 <script>
-  const inquiry = document.querySelector('.inquiry-fields');
-  inquiry?.addEventListener('keydown', event => {
-    if (event instanceof KeyboardEvent && event.key === 'Enter' && event.target instanceof HTMLInputElement) event.preventDefault();
-  });
+  const inquiry = document.querySelector('#inquiry-form');
+  if (inquiry instanceof HTMLFormElement) {
+    const fields = inquiry.querySelector<HTMLFieldSetElement>('fieldset')!;
+    const label = inquiry.querySelector<HTMLElement>('[data-submit-label]')!;
+    const status = inquiry.querySelector<HTMLElement>('#inquiry-status')!;
+    const originalLabel = label.textContent;
+    let sending = false;
+    inquiry.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (sending || !inquiry.reportValidity()) return;
+      sending = true;
+      const data = new FormData(inquiry);
+      fields.disabled = true;
+      inquiry.setAttribute('aria-busy', 'true');
+      label.textContent = inquiry.dataset.sending!;
+      status.textContent = inquiry.dataset.sending!;
+      status.removeAttribute('data-state');
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 20000);
+      try {
+        const response = await fetch(inquiry.action, {
+          method: 'POST', body: data, headers: { Accept: 'application/json' },
+          signal: controller.signal,
+        });
+        if (!response.ok) {
+          status.textContent = inquiry.dataset.error!;
+          status.dataset.state = 'error';
+        } else {
+          const result = await response.json();
+          if (result.ok !== true) throw new Error('Unconfirmed submission');
+          inquiry.reset();
+          status.textContent = inquiry.dataset.success!;
+          status.dataset.state = 'success';
+        }
+      } catch {
+        // A network failure can happen after acceptance; do not retry automatically.
+        status.textContent = inquiry.dataset.uncertain!;
+        status.dataset.state = 'error';
+      } finally {
+        window.clearTimeout(timeout);
+        fields.disabled = false;
+        sending = false;
+        inquiry.removeAttribute('aria-busy');
+        label.textContent = originalLabel;
+        status.focus({ preventScroll: true });
+      }
+    });
+  } else {
+    // Until configured there is no form owner, including without JavaScript.
+    inquiry?.addEventListener('keydown', event => {
+      if (event instanceof KeyboardEvent && event.key === 'Enter' && event.target instanceof HTMLInputElement) event.preventDefault();
+    });
+  }
   document.addEventListener('click', event => {
     const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[data-package]') : null;
     const select = document.querySelector<HTMLSelectElement>('#package');
@@ -46,6 +102,17 @@ const details = [site.business.address, site.business.phone, site.business.email
   .form-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(1.2rem,3vw,2rem); }
   .form-notice { background: var(--blue-light); color: #174776; padding: 1rem; margin-top: 0; border-radius: 6px; display: flex; align-items: flex-start; gap: .6rem; font-size: .78rem; }
   .form-notice svg { flex-shrink: 0; margin-top: .15rem; }
+  .privacy-note { font-size: .78rem; color: var(--muted); margin: 0; }
+  .form-status { font-size: .85rem; margin-bottom: 0; }
+  .form-status:empty { display: none; }
+  .form-status[data-state="error"] { color: #9b2424; }
+  .form-status[data-state="success"] { color: #166534; }
+  .inquiry-fields .button { background: var(--blue); border-color: var(--blue); }
+  @media (hover: hover) {
+    .inquiry-fields .button:not(:disabled):hover { background: var(--blue-dark); border-color: var(--blue-dark); }
+  }
+  .inquiry-fields .button:not(:disabled):active { background: var(--navy); border-color: var(--navy); }
+  .inquiry-fields .button:disabled { cursor: wait; opacity: .7; }
   .required-note { font-size: .72rem; color: var(--muted); }
   .inquiry-fields { display: grid; gap: 1rem; border: 0; margin: 1.2rem 0 0; padding: 0; min-width: 0; }
   .field { display: flex; flex-direction: column; gap: .4rem; min-width: 0; }

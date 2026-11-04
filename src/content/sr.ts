@@ -169,8 +169,13 @@ export const sr: Content = {
     pending: "Biće potvrđeno pre pokretanja",
     notice:
       "Slanje upita još nije dostupno. Kontaktirajte nas putem emaila ili telefona.",
-    required:
-      "Polja označena sa * biće obavezna kada slanje upita bude dostupno.",
+    privacy: "Vaše kontakt podatke i poruku koristimo da odgovorimo na vaš upit. Formspree obrađuje upit i prosleđuje nam ga. Ne unosite lozinke ili poverljive podatke iz rezervnih kopija.",
+    privacyLink: "Politika privatnosti servisa Formspree",
+    sending: "Slanje…",
+    success: "Vaš upit je poslat. Hvala — kontaktiraćemo vas putem navedenih podataka.",
+    error: "Upit nije poslat. Uneti podaci su sačuvani u poljima. Pokušajte ponovo ili pišite na info@ebackup.pro.",
+    uncertain: "Ne možemo da potvrdimo da li je upit primljen. Uneti podaci su sačuvani u poljima. Kontaktirajte info@ebackup.pro pre ponovnog slanja.",
+    required: "Polja označena sa * su obavezna.",
     name: "Ime i prezime",
     company: "Kompanija",
     email: "Email adresa",

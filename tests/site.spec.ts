@@ -8,7 +8,7 @@ test('retired routes return 404', async ({ request }) => {
   }
 });
 for (const locale of ['', 'en/']) {
-  test(`${locale || 'sr'} locale, pricing selection and inactive inquiry`, async ({ page }) => {
+  test(`${locale || 'sr'} locale, pricing selection and inquiry accessibility`, async ({ page }) => {
     await page.goto(base + locale);
     await expect(page.locator('html')).toHaveAttribute('lang', locale ? 'en' : 'sr-Latn');
     await page.reload();
@@ -22,13 +22,15 @@ for (const locale of ['', 'en/']) {
     await page.locator('#package').selectOption('Basic');
     await expect(page.locator('#package')).toHaveValue('Basic');
     for (const [id, value] of [['full-name', 'Test Person'], ['company', 'Test Center'], ['email', 'test@example.com'], ['phone', '+381123456']]) await page.locator(`#${id}`).fill(value);
-    const requests: string[] = [];
-    page.on('request', req => requests.push(req.url()));
-    const url = page.url();
-    await page.locator('.inquiry-fields button').click();
-    for (const id of ['full-name', 'company', 'email', 'phone']) await page.locator(`#${id}`).press('Enter');
-    await expect(page).toHaveURL(url);
-    expect(requests).toEqual([]);
+    if (await page.locator('form#inquiry-form').count() === 0) {
+      const requests: string[] = [];
+      page.on('request', req => requests.push(req.url()));
+      const url = page.url();
+      await page.locator('.inquiry-fields button').click();
+      for (const id of ['full-name', 'company', 'email', 'phone']) await page.locator(`#${id}`).press('Enter');
+      await expect(page).toHaveURL(url);
+      expect(requests).toEqual([]);
+    }
     expect(await page.evaluate(() => localStorage.length)).toBe(0);
     const summary = page.locator('summary').first();
     await summary.focus();
@@ -119,7 +121,7 @@ test('assets and SEO use the deployment base', async ({ page, request }) => {
   expect(await sitemap.text()).toContain(`https://ebackup.pro${base}en/`);
   expect(await (await request.get(base + 'robots.txt')).text()).toContain(`https://ebackup.pro${base}sitemap.xml`);
 });
-test('without JavaScript navigation and inert fields still work', async ({ browser }) => {
+test('without JavaScript navigation and inquiry fallback work', async ({ browser }) => {
   const context = await browser.newContext({ baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4321', javaScriptEnabled: false, reducedMotion: 'reduce' });
   const page = await context.newPage();
   await page.setViewportSize({ width: 375, height: 812 });
@@ -130,10 +132,29 @@ test('without JavaScript navigation and inert fields still work', async ({ brows
   await page.locator('#main-nav a[href="#pricing"]').click();
   await page.locator('a[data-package="Basic"]').click();
   const url = page.url();
+  // The configured form uses a native POST fallback; intercept it to avoid email.
+  let submitted = false;
+  await page.route('https://formspree.io/f/**', async route => {
+    submitted = true;
+    expect(route.request().method()).toBe('POST');
+    expect(route.request().postData()).toContain('email=test%40example.com');
+    await route.fulfill({ contentType: 'text/html', body: '<p>Submission accepted by test</p>' });
+  });
+  const configured = await page.locator('form#inquiry-form').count() > 0;
   await page.locator('#full-name').fill('Private test');
   await page.locator('#full-name').press('Enter');
-  await page.locator('.inquiry-fields button').click();
-  await expect(page).toHaveURL(url);
+  if (configured) {
+    await page.locator('#company').fill('Test company');
+    await page.locator('#email').fill('test@example.com');
+    await page.locator('#phone').fill('+381123456');
+    await page.locator('.inquiry-fields button').click();
+    await expect(page.locator('body')).toHaveText('Submission accepted by test');
+    expect(submitted).toBe(true);
+  } else {
+    await page.locator('.inquiry-fields button').click();
+    await expect(page).toHaveURL(url);
+    expect(submitted).toBe(false);
+  }
   await context.close();
 });
 

@@ -45,7 +45,8 @@ Send `$push` to Codex to authorize `git add .`, `git commit -m "<generated short
 - `src/styles/global.css`: design tokens, base typography and accessible controls. Section styling is scoped to each component.
 - `public/fonts/`: self-hosted Inter variable WOFF2 Latin and Latin Extended subsets, with the OFL license. Serbian č, ć, š, ž and đ are covered. Font URLs use the configured deployment base.
 - `public/images/lan-ict-logo.png`: shared header/footer logo. The footer uses three columns on desktop (brand, contact, quick links), stacked on mobile, with language links in the bottom row.
-- `public/social-preview-sr.png`, `social-preview-en.png` and `favicon.svg`: local brand assets.
+- `public/social-preview-sr.png` and `social-preview-en.png`: local social preview assets.
+- `public/favicon.png`: square 96 × 96 LAN-ICT logo favicon, declared in the shared layout at the stable `/favicon.png` URL. `public/favicon.ico` provides matching 16/32/48 px fallback icons; `public/apple-touch-icon.png` is the matching 180 × 180 Apple icon. The favicon source is `public/images/lan-ict-favicon-source.png`. Keep these assets consistent when changing the logo.
 - `public/CNAME`: custom domain for the generated GitHub Pages export (`ebackup.pro`).
 
 All language links, fonts, metadata and public assets follow `site.base`. The layout supplies canonical, reciprocal `hreflang`, social metadata and correct document language. Static sitemap and robots endpoints use the same configuration. Organization/Service structured data is deliberately deferred until the legal identity and business facts are confirmed.
